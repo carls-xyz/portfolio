@@ -1,0 +1,92 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding : 40px;
+  margin: 20px;
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 100px rgba(26, 74, 145, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.8s ease-out 0.4s backwards;  
+}
+
+.title {
+  color: white;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #bad7fd 0%, rgb(97, 167, 213) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  color: rgba(150, 172, 179, 0.7);
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding : 0 15px;
+}
+
+.arrow{
+display: inline-block;
+margin-right: auto;
+padding: 10px 20px;
+text-decoration: none;
+color: white;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.048),
+    rgba(255, 255, 255, 0.048)
+  );
+
+  /* Bord réfractif lumineux */
+  border-radius : 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
+    0 8px 40px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+}
+.arrow:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0)
+  );
+  transform: translateY(-2px);
+    transition: all 0.3s ease ;
+}
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

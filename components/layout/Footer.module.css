@@ -1,0 +1,28 @@
+
+.main {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  background-color: rgb(0, 0, 0);
+  min-height: 100vh;
+}
+
+.footer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: black;
+}
+
+.footerText {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.footerText:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+

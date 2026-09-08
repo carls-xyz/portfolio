@@ -146,7 +146,7 @@ export const projets: Projet[] = [
       "Formulaire Symfony avec sélection de la classe via EntityType",
       "Docker Compose fourni pour la base de données",
     ],
-    repoUrl: "https://github.com/carls-xyz/evalSymphony",
+    repoUrl: "https://github.com/carls-xyz/evalSymfony",
     imageUrl: "/projets/symfony.svg",
   },
   {

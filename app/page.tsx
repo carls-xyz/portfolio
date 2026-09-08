@@ -16,7 +16,7 @@ export default function Home() {
       <h1 className={styles.title}>Charles Bauchet</h1>
 
       <p className={styles.description}>
-        Étudiant en 2<sup>e</sup> année de Coding &amp; Digital Innovation à l&apos;IIM.
+        Étudiant en 3<sup>e</sup> année de Coding &amp; Digital Innovation à l&apos;IIM.
         Je développe surtout en PHP et Symfony côté serveur, en Next.js et TypeScript
         côté client, et j&apos;explore l&apos;usage des LLM dans des applications concrètes.
       </p>

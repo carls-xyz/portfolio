@@ -48,15 +48,23 @@ cd portfolio
 
 npm install
 
-# Le formulaire de contact a besoin d'une clé Resend
-echo 'RESEND_API_KEY=re_ta_cle' > .env.local
+cp .env.example .env.local
+# Renseigner RESEND_API_KEY et CONTACT_EMAIL
 
 npm run dev
 ```
 
 Le site est disponible sur http://localhost:3000
 
-Sans clé Resend, le site fonctionne mais l'envoi du formulaire de contact échoue.
+## Variables d'environnement
+
+| Variable | Rôle |
+|---|---|
+| `RESEND_API_KEY` | Clé API Resend, obligatoire pour envoyer les messages |
+| `CONTACT_EMAIL` | Adresse qui reçoit les messages du formulaire |
+| `CONTACT_FROM` | Optionnel : expéditeur affiché. Par défaut le domaine de test Resend, qui ne délivre qu'à l'adresse du titulaire du compte |
+
+Sans ces variables, le site fonctionne mais le formulaire de contact renvoie une erreur explicite au lieu de tenter l'envoi. Aucune adresse de destination n'est écrite en dur dans le code.
 
 ## Ajouter un projet
 

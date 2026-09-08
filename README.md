@@ -1,5 +1,7 @@
 # Portfolio
 
+**En ligne : https://portfolio-six-rho-84cr4xv2i2.vercel.app**
+
 Mon portfolio personnel : une page d'accueil, une galerie de projets avec une page de détail par projet, et un formulaire de contact qui envoie un mail via Resend.
 
 Projet réalisé dans le cadre de mes études à l'IIM, puis repris pour mon usage personnel.
@@ -76,6 +78,7 @@ Le champ `role` sert aux projets réalisés à plusieurs : il décrit ce que j'y
 
 Les illustrations sont des visuels SVG abstraits stockés dans `public/projets/`, un par projet, déclinés dans la palette du site. C'est un choix assumé plutôt que des captures d'écran : le rendu reste neutre et homogène d'un projet à l'autre. Pour en ajouter un, reprendre le format des fichiers existants (600×340, dégradé sombre, teinte propre au projet).
 
-## À faire
+## Déploiement
 
-- Déployer le site et ajouter le lien ici
+Hébergé sur Vercel, redéployé automatiquement à chaque push sur `main`.
+Les variables `RESEND_API_KEY` et `CONTACT_EMAIL` sont configurées côté Vercel, jamais dans le dépôt.

@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Mon portfolio personnel : une page d'accueil, une galerie de projets avec une page de détail par projet, et un formulaire de contact qui envoie un mail via Resend.
 
-First, run the development server:
+Projet réalisé dans le cadre de mes études à l'IIM, puis repris pour mon usage personnel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Fonctionnalités
+
+- Page d'accueil de présentation
+- Liste des projets, alimentée par un fichier de données typé (`data/projets.ts`)
+- Page de détail par projet, générée par route dynamique (`/projets/[slug]`)
+- Formulaire de contact avec envoi d'email via Resend, traité par une route API Next.js
+- Page 404 personnalisée
+- Styles en CSS Modules, complétés par Tailwind CSS
+
+## Stack
+
+- **Next.js 16** avec l'App Router
+- **React 19** et **TypeScript**
+- **Tailwind CSS 4** et CSS Modules
+- **Resend** pour l'envoi des emails de contact
+- **lucide-react** pour les icônes
+- ESLint
+
+## Structure
+
+```
+app/
+├── page.tsx              # Accueil
+├── projets/
+│   ├── page.tsx          # Liste des projets
+│   └── [slug]/page.tsx   # Détail d'un projet
+├── contact/page.tsx      # Formulaire de contact
+├── api/contact/route.ts  # Route API : envoi via Resend
+└── not-found.tsx         # Page 404
+components/
+├── layout/               # Header, Footer
+├── projets/              # Carte projet
+└── contact/              # Formulaire et template d'email
+data/projets.ts           # Contenu des projets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Lancer en local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/carls-xyz/portfolio.git
+cd portfolio
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm install
 
-## Learn More
+# Le formulaire de contact a besoin d'une clé Resend
+echo 'RESEND_API_KEY=re_ta_cle' > .env.local
 
-To learn more about Next.js, take a look at the following resources:
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Le site est disponible sur http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sans clé Resend, le site fonctionne mais l'envoi du formulaire de contact échoue.
 
-## Deploy on Vercel
+## Ajouter un projet
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Les projets sont déclarés dans `data/projets.ts`. Chaque entrée a un `slug`, un `title`, une `description` et une `imageUrl` ; le slug sert d'URL sur la page de détail.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## À faire
+
+- Remplacer les images d'illustration par de vraies captures des projets
+- Compléter la liste avec les projets manquants
+- Déployer le site et ajouter le lien ici

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340" role="img" aria-label="CRUD sécurisé">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0f1a"/><stop offset="1" stop-color="#05070c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="25%" r="75%">
+      <stop offset="0" stop-color="#10b981" stop-opacity=".28"/><stop offset="1" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="340" rx="20" fill="url(#bg)"/>
+  <rect width="600" height="340" rx="20" fill="url(#glow)"/>
+  <rect x="1" y="1" width="598" height="338" rx="20" fill="none" stroke="#ffffff" stroke-opacity=".12"/>
+  <path d="M300 80 L390 115 V175 C390 225 350 255 300 272 C250 255 210 225 210 175 V115 Z" fill="#10b981" fill-opacity=".18" stroke="#10b981" stroke-opacity=".7" stroke-width="3"/><path d="M268 176 l22 22 46 -52" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="40" y="292" font-family="-apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#ffffff" fill-opacity=".92">CRUD sécurisé</text>
+  <text x="40" y="60" font-family="-apple-system, Segoe UI, sans-serif" font-size="26" font-weight="700" fill="#10b981">CSRF</text>
+</svg>

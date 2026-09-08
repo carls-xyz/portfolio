@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340" role="img" aria-label="Doc Assistant">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0f1a"/><stop offset="1" stop-color="#05070c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="25%" r="75%">
+      <stop offset="0" stop-color="#3b82f6" stop-opacity=".28"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="340" rx="20" fill="url(#bg)"/>
+  <rect width="600" height="340" rx="20" fill="url(#glow)"/>
+  <rect x="1" y="1" width="598" height="338" rx="20" fill="none" stroke="#ffffff" stroke-opacity=".12"/>
+  <line x1="120" y1="150" x2="260" y2="90" stroke="#3b82f6" stroke-opacity=".35" stroke-width="2"/><line x1="120" y1="150" x2="260" y2="210" stroke="#3b82f6" stroke-opacity=".35" stroke-width="2"/><line x1="120" y1="150" x2="400" y2="150" stroke="#3b82f6" stroke-opacity=".35" stroke-width="2"/><line x1="120" y1="150" x2="400" y2="60" stroke="#3b82f6" stroke-opacity=".35" stroke-width="2"/><line x1="120" y1="150" x2="400" y2="240" stroke="#3b82f6" stroke-opacity=".35" stroke-width="2"/><circle cx="120" cy="150" r="10" fill="#3b82f6" fill-opacity=".9"/><circle cx="260" cy="90" r="7" fill="#3b82f6" fill-opacity=".9"/><circle cx="260" cy="210" r="7" fill="#3b82f6" fill-opacity=".9"/><circle cx="400" cy="150" r="7" fill="#3b82f6" fill-opacity=".9"/><circle cx="400" cy="60" r="7" fill="#3b82f6" fill-opacity=".9"/><circle cx="400" cy="240" r="7" fill="#3b82f6" fill-opacity=".9"/>
+  <text x="40" y="292" font-family="-apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#ffffff" fill-opacity=".92">Doc Assistant</text>
+  <text x="40" y="60" font-family="-apple-system, Segoe UI, sans-serif" font-size="26" font-weight="700" fill="#3b82f6">RAG</text>
+</svg>

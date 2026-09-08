@@ -1,33 +1,37 @@
-import Image from "next/image";
-import Header from "@/components/layout/Header";
+import Link from "next/link";
 import "@/app/globals.css";
 import ProjetsCard from "@/components/projets/ProjetsCard";
-import { projets } from "@/data/projets";
+import { projets, projetsALaUne } from "@/data/projets";
+import styles from "./projets/projets.module.css";
 
 export const metadata = {
   title: "Mon Portfolio",
-  description: "Bienvenue sur mon portfolio, découvrez mes projets et compétences en développement web.",
+  description:
+    "Portfolio de Charles Bauchet, étudiant développeur web à l'IIM. Projets en PHP, Symfony, Next.js et Python.",
 };
 
 export default function Home() {
   return (
-    <div className="hero-section">
-      <div className="content">
-        <h1 className="title">Bienvenue sur mon Portfolio</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Charles Bauchet</h1>
 
-        <div className="container">
-          <p className="presentation"> Etudiant en 2ème année en Coding & Digital Innovation à l'IIM vous découvrez ici mes projets et compétences en développement web.
-          </p>
-<div className="grid">
-        {projets.map(projets => (
-          <ProjetsCard
-            key={projets.slug}
-            projets={projets}
-          />
+      <p className={styles.description}>
+        Étudiant en 2<sup>e</sup> année de Coding &amp; Digital Innovation à l&apos;IIM.
+        Je développe surtout en PHP et Symfony côté serveur, en Next.js et TypeScript
+        côté client, et j&apos;explore l&apos;usage des LLM dans des applications concrètes.
+      </p>
+
+      <div className={styles.grid}>
+        {projetsALaUne.map(projet => (
+          <ProjetsCard key={projet.slug} projet={projet} />
         ))}
       </div>
-          </div>
-        </div>
+
+      <div className={styles.actions}>
+        <Link href="/projets" className={styles.lien}>
+          Voir les {projets.length} projets →
+        </Link>
       </div>
+    </div>
   );
 }

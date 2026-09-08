@@ -7,8 +7,8 @@ Projet réalisé dans le cadre de mes études à l'IIM, puis repris pour mon usa
 ## Fonctionnalités
 
 - Page d'accueil de présentation
-- Liste des projets, alimentée par un fichier de données typé (`data/projets.ts`)
-- Page de détail par projet, générée par route dynamique (`/projets/[slug]`)
+- Liste des projets, alimentée par un fichier de données typé (`data/projets.ts`), séparée en projets personnels et projets de cours ou d'équipe
+- Page de détail par projet, prégénérée en statique via `generateStaticParams` : contexte, points techniques, contribution personnelle sur les projets de groupe, technologies et lien vers le dépôt
 - Formulaire de contact avec envoi d'email via Resend, traité par une route API Next.js
 - Page 404 personnalisée
 - Styles en CSS Modules, complétés par Tailwind CSS
@@ -60,10 +60,15 @@ Sans clé Resend, le site fonctionne mais l'envoi du formulaire de contact écho
 
 ## Ajouter un projet
 
-Les projets sont déclarés dans `data/projets.ts`. Chaque entrée a un `slug`, un `title`, une `description` et une `imageUrl` ; le slug sert d'URL sur la page de détail.
+Les projets sont déclarés dans `data/projets.ts`, typés par `Projet`. Chaque entrée porte un `slug` qui sert d'URL, un titre, une accroche, une description, l'année, le contexte (personnel, cours ou équipe), la liste des technologies, les points techniques à retenir, l'illustration et éventuellement l'URL du dépôt.
+
+Le champ `role` sert aux projets réalisés à plusieurs : il décrit ce que j'y ai personnellement développé, et n'apparaît sur la page de détail que s'il est renseigné.
+
+`aLaUne: true` fait remonter le projet sur la page d'accueil.
+
+Les illustrations sont des visuels SVG stockés dans `public/projets/`. Ce ne sont pas des captures d'écran des applications.
 
 ## À faire
 
-- Remplacer les images d'illustration par de vraies captures des projets
-- Compléter la liste avec les projets manquants
+- Remplacer les visuels SVG par de vraies captures d'écran des applications
 - Déployer le site et ajouter le lien ici

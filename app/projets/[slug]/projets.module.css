@@ -121,6 +121,39 @@
   border-bottom: 1px solid var(--line);
 }
 
+/*
+ * "Ce que contient le projet" in a box of the site's accent (the chosen
+ * creature's colour): tinted surface, accent hairline, accent title.
+ */
+.encadre {
+  padding: 24px 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--accent), 0.4);
+  background: rgba(var(--accent), 0.08);
+}
+
+.encadre .sectionTitle {
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  border-bottom-color: rgba(var(--accent), 0.3);
+}
+
+.encadre .point {
+  color: rgba(var(--ink), 0.85);
+}
+
+@media (max-width: 600px) {
+  /* Phones: the panel gives its width back to the content */
+  .container {
+    gap: 32px;
+    margin: 96px 12px 48px;
+    padding: 28px 18px;
+  }
+
+  .encadre {
+    padding: 20px 18px;
+  }
+}
+
 .points {
   list-style: none;
   padding: 0;

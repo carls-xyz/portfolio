@@ -65,7 +65,7 @@ export default async function ProjetPage({ params }: Props) {
 
         <p className={styles.description}>{projet.description}</p>
 
-        <section className={styles.section}>
+        <section className={`${styles.section} ${styles.encadre}`}>
           <h2 className={styles.sectionTitle}>Ce que contient le projet</h2>
           <ul className={styles.points}>
             {projet.points.map(point => (

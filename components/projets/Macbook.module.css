@@ -1,7 +1,8 @@
 /* Space grey in both themes, like the real thing */
 .macbook {
+  position: relative;
   width: 100%;
-  max-width: 720px;
+  max-width: 520px;
   margin: 0 auto;
   perspective: 1400px;
 }
@@ -88,5 +89,53 @@
 
   :global(:root:not(:active-view-transition)) .ecran > * {
     animation: allumage 1200ms 150ms ease-out both;
+  }
+}
+
+/*
+ * The creature on the base's left edge, beside the lid, facing the screen:
+ * 3 screen pixels per sprite pixel. It types (quick little bobs); on hover of
+ * the laptop it stops and looks up.
+ */
+.bestiole {
+  position: absolute;
+  left: 0;
+  bottom: 14px;
+  z-index: 1;
+  width: 36px;
+  height: 33px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.leve {
+  display: none;
+}
+
+.macbook:hover .tape {
+  display: none;
+}
+
+.macbook:hover .leve {
+  display: inline;
+}
+
+@keyframes tape {
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tape {
+    animation: tape 240ms steps(2, end) infinite;
+  }
+}
+
+/* Narrow screens: the base's edge is short, so a smaller creature */
+@media (max-width: 600px) {
+  .bestiole {
+    width: 24px;
+    height: 22px;
   }
 }

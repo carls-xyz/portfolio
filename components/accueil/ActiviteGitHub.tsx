@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import { lireActivite, UTILISATEUR_GITHUB, type Jour } from '@/lib/github'
 import BestioleRonde from './BestioleRonde'
+import BulleCalendrier from './BulleCalendrier'
 import styles from './ActiviteGitHub.module.css'
 
 /*
@@ -13,12 +14,8 @@ import styles from './ActiviteGitHub.module.css'
 const jourFr = (date: string, options: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat('fr-FR', { timeZone: 'UTC', ...options }).format(new Date(`${date.slice(0, 10)}T00:00:00Z`))
 
-const bulle = (j: Jour) =>
-  `${j.n === 0 ? 'Aucune contribution' : j.n === 1 ? '1 contribution' : `${j.n} contributions`} le ${jourFr(j.date, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })}`
+const nombre = (j: Jour) => (j.n === 0 ? 'Aucune contribution' : j.n === 1 ? '1 contribution' : `${j.n} contributions`)
+const date = (j: Jour) => jourFr(j.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
 
 export default async function ActiviteGitHub() {
   const activite = await lireActivite()
@@ -55,44 +52,55 @@ export default async function ActiviteGitHub() {
         </div>
         {derniere && (
           <p className={styles.derniere}>
-            Dernière activité sur <strong>{derniere.depot}</strong>, le {jourFr(derniere.date, { day: 'numeric', month: 'short' })}
+            Dernière activité sur <strong>{derniere.depot}</strong>, le{' '}
+            {jourFr(derniere.date, { day: 'numeric', month: 'short' })}
           </p>
         )}
       </div>
 
-      {/* Scrolls sideways on small screens, starting from the most recent weeks */}
-      <div className={styles.defile}>
-        <div className={styles.calendrier} style={{ '--colonnes': colonnes } as CSSProperties}>
-          <div className={styles.mois} aria-hidden="true">
-            {mois.map(m => (
-              <span key={`${m.colonne}-${m.nom}`} style={{ gridColumnStart: m.colonne + 1 }}>
-                {m.nom}
-              </span>
-            ))}
+      {/* Scrolls sideways on small screens, starting from the most recent weeks; hover a day for its count */}
+      <BulleCalendrier>
+        <div className={styles.defile}>
+          <div className={styles.calendrier} style={{ '--colonnes': colonnes } as CSSProperties}>
+            <div className={styles.mois} aria-hidden="true">
+              {mois.map(m => (
+                <span key={`${m.colonne}-${m.nom}`} style={{ gridColumnStart: m.colonne + 1 }}>
+                  {m.nom}
+                </span>
+              ))}
+            </div>
+            <ol className={styles.jours} aria-label="Contributions par jour">
+              {jours.map((j, i) => (
+                <li
+                  key={j.date}
+                  className={styles.jour}
+                  data-niveau={j.niveau}
+                  data-nombre={nombre(j)}
+                  data-jour={date(j)}
+                  // Days with contributions can be reached from the keyboard, and are read out
+                  tabIndex={j.n > 0 ? 0 : undefined}
+                  aria-label={j.n > 0 ? `${nombre(j)} le ${date(j)}` : undefined}
+                  aria-hidden={j.n > 0 ? undefined : true}
+                  style={
+                    {
+                      gridRowStart: i === 0 ? decalage + 1 : undefined,
+                      '--x': Math.floor((i + decalage) / 7) / colonnes,
+                    } as CSSProperties
+                  }
+                />
+              ))}
+            </ol>
           </div>
-          <ol className={styles.jours} aria-label="Contributions par jour">
-            {jours.map((j, i) => (
-              <li
-                key={j.date}
-                className={styles.jour}
-                data-niveau={j.niveau}
-                title={bulle(j)}
-                aria-label={j.n > 0 ? bulle(j) : undefined}
-                aria-hidden={j.n > 0 ? undefined : true}
-                style={
-                  {
-                    gridRowStart: i === 0 ? decalage + 1 : undefined,
-                    '--x': Math.floor((i + decalage) / 7) / colonnes,
-                  } as CSSProperties
-                }
-              />
-            ))}
-          </ol>
         </div>
-      </div>
+      </BulleCalendrier>
 
       <div className={styles.pied}>
-        <a href={`https://github.com/${UTILISATEUR_GITHUB}`} target="_blank" rel="noopener noreferrer" className={styles.lien}>
+        <a
+          href={`https://github.com/${UTILISATEUR_GITHUB}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.lien}
+        >
           Profil GitHub ↗
         </a>
         <span className={styles.legende} aria-hidden="true">

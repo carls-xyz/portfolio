@@ -5,6 +5,7 @@ import Bestiole from "@/components/accueil/Bestiole";
 import ActiviteGitHub from "@/components/accueil/ActiviteGitHub";
 import Widgets from "@/components/accueil/Widgets";
 import Meteo from "@/components/accueil/Meteo";
+import DefilementAuto from "@/components/accueil/DefilementAuto";
 import Cover from "@/components/projets/Cover";
 import { projets } from "@/data/projets";
 import styles from "./projets/projets.module.css";
@@ -28,7 +29,8 @@ export default function Home() {
 
       {/* Every project at a glance: each tile plays its cover's gesture on hover */}
       <nav className={styles.bande} aria-label="Tous les projets">
-        <ul className={styles.bandeListe}>
+        {/* On small screens the tiles become a swipeable row that drifts on its own */}
+        <DefilementAuto className={styles.bandeListe}>
           {projets.map((projet) => (
             <li key={projet.slug}>
               <Link href={`/projets/${projet.slug}`} className={styles.tuile} data-projet={projet.slug}>
@@ -37,7 +39,7 @@ export default function Home() {
               </Link>
             </li>
           ))}
-        </ul>
+        </DefilementAuto>
       </nav>
 
       {/* Where I am and the time there, the creature at its desk, the weather, GitHub activity: visitors can rearrange them */}

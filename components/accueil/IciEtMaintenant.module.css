@@ -110,7 +110,12 @@
   }
 }
 
-@media (max-width: 600px) {
+
+/*
+ * Stacked (globe above the time) only when the card itself is narrow, whatever
+ * the screen: a full-width card on a small tablet keeps them side by side
+ */
+@container (max-width: 400px) {
   .carte {
     flex-direction: column;
     gap: 16px;
@@ -123,31 +128,8 @@
   }
 
   .globe {
-    width: 160px;
-    height: 160px;
-  }
-
-  .heure {
-    font-size: 36px;
-  }
-}
-
-/* In a narrow place of the home page's widget grid: the same stacked layout as on phones */
-@container (max-width: 440px) {
-  .carte {
-    flex-direction: column;
-    gap: 16px;
-    padding: 24px 20px;
-  }
-
-  .infos {
-    justify-items: center;
-    text-align: center;
-  }
-
-  .globe {
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
   }
 
   .heure {

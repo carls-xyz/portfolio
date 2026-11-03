@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 /*
- * What Charles is listening to right now, from Last.fm (Apple Music is
+ * What the site's owner is listening to right now, from Last.fm (Apple Music is
  * scrobbled there by a separate app). The API key stays on the server; the
  * page only receives the track. Without LASTFM_API_KEY and LASTFM_USER (or
  * LASTFM_USERNAME), or when nothing is playing, it answers { enCours: false }

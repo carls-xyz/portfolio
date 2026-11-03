@@ -3,7 +3,7 @@ import styles from './contact.module.css'
 
 export const metadata = {
   title: 'Contact',
-  description: 'Écrire à Charles Bauchet, étudiant développeur web à l’IIM',
+  description: 'Envoyer un message via le formulaire de contact',
 }
 
 export default function ContactPage() {

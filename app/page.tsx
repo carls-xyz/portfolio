@@ -13,19 +13,14 @@ import styles from "./projets/projets.module.css";
 export const metadata = {
   title: { absolute: "carls-xyz" },
   description:
-    "Portfolio de Charles Bauchet, étudiant développeur web à l'IIM. Projets en PHP, Symfony, Next.js et Python.",
+    "Portfolio de développeur web : projets en PHP, Symfony, Next.js et Python.",
 };
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Charles Bauchet</h1>
-
-      <p className={styles.description}>
-        Étudiant en 3<sup>e</sup> année de Coding &amp; Digital Innovation à l&apos;IIM.
-        Je développe surtout en PHP et Symfony côté serveur, en Next.js et TypeScript
-        côté client, et j&apos;explore l&apos;usage des LLM dans des applications concrètes.
-      </p>
+      {/* No visible heading: the page opens straight on the projects; this one is for screen readers and search */}
+      <h1 className="sr-only">carls-xyz</h1>
 
       {/* Every project at a glance: each tile plays its cover's gesture on hover */}
       <nav className={styles.bande} aria-label="Tous les projets">

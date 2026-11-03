@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p className={styles.footerText}>
-        © 2026 Charles Bauchet
+        © 2026 carls-xyz
         <span className={styles.sep} aria-hidden="true">·</span>
         Mis à jour le {miseAJour}
         <span className={styles.sep} aria-hidden="true">·</span>

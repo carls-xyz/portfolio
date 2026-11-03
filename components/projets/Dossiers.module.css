@@ -164,33 +164,38 @@
   }
 }
 
-@media (max-width: 720px) {
+/* Scrolled to on phones: clear of the fixed nav */
+.liste {
+  scroll-margin-top: 96px;
+}
+
+/*
+ * Phones: three folders on one line came out at about 100 px each, the glass
+ * hiding the covers. Instead they stack, full width and flatter, the covers
+ * peeking over the top edge, and they lift less when opened so they don't
+ * cover the folder above.
+ */
+@media (max-width: 600px) {
   .dossiers {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    padding-top: 56px;
+    grid-template-columns: minmax(0, 340px);
+    gap: 44px;
+    padding-top: 48px;
+  }
+
+  .dossier {
+    aspect-ratio: 2.3;
+  }
+
+  .feuille {
+    width: 52%;
   }
 
   .face {
-    padding: 10px;
-    border-radius: 10px;
+    height: 52%;
+    padding: 12px 16px;
   }
 
-  .titre {
-    font-size: 15px;
-    gap: 6px;
-  }
-
-  .titre::before {
-    width: 6px;
-    height: 6px;
-  }
-
-  .compte {
-    font-size: 11px;
-  }
-
-  .dos::before {
-    height: 10px;
+  .dossier[aria-pressed='true'] .feuille {
+    transform: translateX(-50%) translate(calc(var(--i) * 48%), -26%) rotate(calc(var(--i) * 6deg));
   }
 }

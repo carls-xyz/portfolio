@@ -4,17 +4,14 @@ import styles from './projets.module.css'
 export const metadata = {
   title: 'Projets',
   description:
-    "Les projets réalisés par Charles Bauchet : projets personnels, projets de cours et projets d'équipe.",
+    "Les projets : personnels, de cours et d'équipe.",
 }
 
 export default function ProjetsPage() {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Mes Projets</h1>
-      <p className={styles.description}>
-        Rangés en trois dossiers : personnels, de cours et d&apos;équipe. Ouvrez un dossier pour voir ses projets.
-        Pour les projets de groupe, chaque carte indique ma part.
-      </p>
+      {/* No visible heading: the folders speak for themselves; this one is for screen readers and search */}
+      <h1 className="sr-only">Projets</h1>
 
       <Dossiers />
     </div>

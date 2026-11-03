@@ -11,7 +11,7 @@ export const metadata = {
     default: "carls-xyz",
     template: "carls-xyz",
   },
-  description: "Portfolio de Charles Bauchet",
+  description: "Portfolio de développeur web",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

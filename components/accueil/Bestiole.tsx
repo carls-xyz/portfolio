@@ -19,7 +19,7 @@ import styles from './Bestiole.module.css'
  * on its screen when one is hovered in the strip above, wears a hat in
  * December and keeps a pumpkin around Halloween. In the light theme it is
  * broad daylight whatever the hour: it stays awake, in sunglasses. While
- * Charles is listening to music (Last.fm, /api/ecoute), it wears headphones,
+ * the site's owner is listening to music (Last.fm, /api/ecoute), it wears headphones,
  * nods along, little notes float up, and the track is named under the scene.
  * Under the scene, four faint little heads let the visitor swap the creature
  * for another one, which also repaints the site's accent in its colour. Click it and it jumps; the

@@ -40,6 +40,13 @@ function choisir(cle: string | null) {
   else url.searchParams.delete('dossier')
   window.history.replaceState(null, '', url)
   window.dispatchEvent(new Event('dossier'))
+  // On phones the folders are stacked and the projects open below them: bring the list into view
+  if (cle && window.matchMedia('(max-width: 600px)').matches) {
+    const calme = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    requestAnimationFrame(() =>
+      document.getElementById('projets-du-dossier')?.scrollIntoView({ behavior: calme ? 'auto' : 'smooth', block: 'start' }),
+    )
+  }
 }
 
 export default function Dossiers() {
@@ -84,7 +91,7 @@ export default function Dossiers() {
         })}
       </div>
 
-      <section id="projets-du-dossier" aria-label={ouvert?.section ?? 'Projets du dossier ouvert'}>
+      <section id="projets-du-dossier" className={styles.liste} aria-label={ouvert?.section ?? 'Projets du dossier ouvert'}>
         {ouvert && (
           <div key={ouvert.cle} className={styles.contenu}>
             <h2 className={pageStyles.sousTitre}>{ouvert.section}</h2>

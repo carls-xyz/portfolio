@@ -98,7 +98,7 @@ type Props = {
   bonnet?: boolean
   /** Sunglasses, in the light theme */
   lunettes?: boolean
-  /** Headphones, while Charles is listening to music */
+  /** Headphones, while the site's owner is listening to music */
   casque?: boolean
   /** Draw this creature only, instead of the visitor's choice */
   forme?: IdBestiole

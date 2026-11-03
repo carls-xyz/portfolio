@@ -203,14 +203,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  /* Category colours stay fixed whatever creature sets the accent: blue is "personnel" */
-  background: rgb(97, 167, 213);
+  background: rgb(var(--accent));
 }
 
-.badge[data-contexte='Projet de cours']::before {
-  background: rgb(134, 190, 150);
-}
 
-.badge[data-contexte="Projet d'équipe"]::before {
-  background: rgb(214, 170, 96);
-}

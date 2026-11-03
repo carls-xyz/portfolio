@@ -34,13 +34,13 @@
   outline-offset: 6px;
 }
 
-/* The back of the folder, with its tab, in the context's colour */
+/* The back of the folder, with its tab, in the site's accent */
 .dos {
   position: absolute;
   inset: 10% 0 0;
   border-radius: 4px 14px 14px 14px;
-  background: rgba(var(--teinte), 0.2);
-  border: 1px solid rgba(var(--teinte), 0.35);
+  background: rgba(var(--accent), 0.2);
+  border: 1px solid rgba(var(--accent), 0.35);
 }
 
 .dos::before {
@@ -78,7 +78,7 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* The frosted front panel, tinted with the context's colour */
+/* The frosted front panel, tinted with the site's accent */
 .face {
   position: absolute;
   left: 0;
@@ -94,7 +94,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
-    rgba(var(--teinte), 0.1);
+    rgba(var(--accent), 0.1);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   backdrop-filter: blur(14px) saturate(150%);
   box-shadow:
@@ -118,7 +118,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgb(var(--teinte));
+  background: rgb(var(--accent));
 }
 
 .compte {
@@ -140,7 +140,7 @@
 
 .dossier[aria-pressed='true'] .face {
   transform: rotateX(-16deg);
-  border-color: rgba(var(--teinte), 0.6);
+  border-color: rgba(var(--accent), 0.6);
 }
 
 /* The open folder's projects: a short fade and rise each time one opens */

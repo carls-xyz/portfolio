@@ -15,10 +15,11 @@ import styles from './Dossiers.module.css'
  * (?dossier=equipe), so coming back from a project reopens it.
  */
 
-const DOSSIERS: { contexte: Contexte; cle: string; titre: string; section: string; teinte: string }[] = [
-  { contexte: 'Projet personnel', cle: 'personnel', titre: 'Personnel', section: 'Projets personnels', teinte: '97, 167, 213' },
-  { contexte: 'Projet de cours', cle: 'cours', titre: 'Cours', section: 'Projets de cours', teinte: '134, 190, 150' },
-  { contexte: "Projet d'équipe", cle: 'equipe', titre: 'Équipe', section: "Projets d'équipe", teinte: '214, 170, 96' },
+/* All three in the site's accent, i.e. the colour of the creature the visitor picked */
+const DOSSIERS: { contexte: Contexte; cle: string; titre: string; section: string }[] = [
+  { contexte: 'Projet personnel', cle: 'personnel', titre: 'Personnel', section: 'Projets personnels' },
+  { contexte: 'Projet de cours', cle: 'cours', titre: 'Cours', section: 'Projets de cours' },
+  { contexte: "Projet d'équipe", cle: 'equipe', titre: 'Équipe', section: "Projets d'équipe" },
 ]
 
 /* The open folder, read from the URL; none on the server */
@@ -60,7 +61,6 @@ export default function Dossiers() {
               aria-controls="projets-du-dossier"
               aria-label={`${d.section}, ${liste.length} projets`}
               onClick={() => choisir(ici ? null : d.cle)}
-              style={{ '--teinte': d.teinte } as CSSProperties}
             >
               <span className={styles.dos} aria-hidden="true" />
               <span className={styles.feuilles} aria-hidden="true">

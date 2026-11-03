@@ -1,28 +1,21 @@
+/* Same card layout as before: an opaque surface with a hairline, no blur, no glow */
 .card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 28px;
+  gap: 16px;
+  padding: 24px;
   margin: 0;
-  background: rgba(15, 15, 15, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 100px rgba(26, 74, 145, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--line);
   position: relative;
   overflow: hidden;
   text-decoration: none;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-  animation: slideUp 0.8s ease-out 0.4s backwards;
+  transition: border-color 150ms ease-out;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(97, 167, 213, 0.4);
+  border-color: rgba(var(--accent), 0.4);
 }
 
 .cover {
@@ -30,49 +23,57 @@
   height: auto;
   aspect-ratio: 600 / 340;
   object-fit: cover;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--ink), 0.08);
 }
 
 .meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .badge {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: rgba(186, 215, 253, 0.9);
-  background: rgba(97, 167, 213, 0.12);
-  border: 1px solid rgba(97, 167, 213, 0.3);
-  border-radius: 999px;
-  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(var(--bleu-texte), 0.9);
+  background: rgba(var(--accent), 0.12);
+  border: 1px solid rgba(var(--accent), 0.3);
+  border-radius: 6px;
+  padding: 2px 8px;
 }
 
 .annee {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--ink), var(--a-moyen));
+  font-variant-numeric: tabular-nums;
 }
 
 .title {
-  color: white;
+  font-family: var(--font-display);
+  color: rgb(var(--ink));
   font-size: 1.6rem;
+  font-weight: 500;
   line-height: 1.2;
-  background: linear-gradient(135deg, #bad7fd 0%, rgb(97, 167, 213) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .description {
-  color: rgba(150, 172, 179, 0.75);
+  color: rgba(var(--gris-bleu), 0.85);
   font-size: 15px;
   line-height: 1.5;
   margin: 0;
   flex-grow: 1;
+}
+
+.part {
+  color: rgba(var(--ink), 0.75);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.partLabel {
+  color: rgba(var(--bleu-texte), 0.9);
+  font-weight: 500;
 }
 
 .stack {
@@ -86,50 +87,50 @@
 
 .techno {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 4px 10px;
+  color: rgba(var(--ink), 0.65);
+  background: rgba(var(--ink), 0.05);
+  border: 1px solid rgba(var(--ink), 0.08);
+  border-radius: 6px;
+  padding: 4px 8px;
 }
 
 .arrow {
   display: inline-block;
   margin-right: auto;
-  margin-top: 6px;
-  padding: 10px 20px;
-  text-decoration: none;
-  color: white;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.048),
-    rgba(255, 255, 255, 0.048)
-  );
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
-    0 8px 40px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+  padding: 8px 16px;
+  color: rgb(var(--ink));
+  font-size: 14px;
+  background: rgba(var(--ink), 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--ink), 0.12);
+  transition: background-color 150ms ease-out;
 }
 
 .card:hover .arrow {
-  background: linear-gradient(
-    135deg,
-    rgba(97, 167, 213, 0.18),
-    rgba(97, 167, 213, 0.08)
-  );
+  background: rgba(var(--accent), 0.16);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* One dot per context, so the grid reads at a glance: personal, course, team */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  /* Category colours stay fixed whatever creature sets the accent: blue is "personnel" */
+  background: rgb(97, 167, 213);
+}
+
+.badge[data-contexte='Projet de cours']::before {
+  background: rgb(134, 190, 150);
+}
+
+.badge[data-contexte="Projet d'équipe"]::before {
+  background: rgb(214, 170, 96);
 }

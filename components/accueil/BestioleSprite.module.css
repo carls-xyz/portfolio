@@ -1,0 +1,23 @@
+/* Walking feet: two poses that swap on whole steps, like an old game sprite */
+@keyframes pasA {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pasB {
+  0%,
+  49% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pasA {
+    animation: pasA 360ms steps(1, end) infinite;
+  }
+
+  .pasB {
+    animation: pasB 360ms steps(1, end) infinite;
+  }
+}

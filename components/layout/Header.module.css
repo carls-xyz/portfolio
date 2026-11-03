@@ -5,35 +5,22 @@
   transform: translateX(-50%);
   z-index: 1000;
   width: fit-content;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Same floating pill as before, now an opaque surface with a hairline instead of glass */
 .nav {
   display: flex;
   gap: 24px;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 32px;
   padding: 12px 24px;
   position: relative;
-
-  /* Teinté très légèrement */
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0)
-  );
-
-  /* Bord réfractif lumineux */
-  border: 1px solid rgba(255, 255, 255, 0.091);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
-    0 8px 40px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
 }
 
 .menu {
+  position: relative;
   display: flex;
   gap: 8px;
   list-style: none;
@@ -41,52 +28,96 @@
   padding: 0;
 }
 
+/* The pill behind the current page; it glides when the page changes */
+.menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--pastille-w, 0);
+  transform: translateX(var(--pastille-x, 0));
+  opacity: var(--pastille-o, 0);
+  border-radius: 12px;
+  background: rgba(var(--accent), 0.16);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent), 0.35);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu::before {
+    transition:
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 150ms ease-out;
+  }
+}
+
+.menu li {
+  position: relative;
+}
+
 .link {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(var(--ink), 0.9);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
+  font-weight: 500;
   padding: 8px 16px;
   border-radius: 12px;
   display: block;
-
-  
+  transition: background-color 150ms ease-out, color 150ms ease-out;
 }
 
 .link:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0)
-  );
-
-  /* Bord réfractif lumineux */
-  border: 1px solid rgba(255, 255, 255, 0.091);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
-    0 8px 40px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  color: rgb(var(--ink));
+  background: rgba(var(--ink), 0.08);
 }
+
+.link[aria-current='page'] {
+  color: rgb(var(--ink));
+}
+
+.link[aria-current='page']:hover {
+  background: transparent;
+}
+
+/* The search and theme buttons, side by side at the end of the pill */
+.outils {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: rgba(var(--ink), 0.75);
+  cursor: pointer;
+  transition: color 150ms ease-out, background-color 150ms ease-out;
+}
+
+.theme:hover {
+  color: rgb(var(--ink));
+  background: rgba(var(--ink), 0.08);
+}
+
 /* Responsive mobile */
 @media (max-width: 768px) {
   .header {
-    top: 10px;
-    width: calc(100% - 20px);
+    top: 12px;
+    width: calc(100% - 24px);
     max-width: 500px;
   }
 
   .nav {
-    padding: 10px 16px;
+    padding: 8px 16px;
     gap: 12px;
-  }
-
-  .logo {
-    font-size: 16px;
-    padding: 6px 10px;
   }
 
   .menu {
@@ -95,6 +126,6 @@
 
   .link {
     font-size: 12px;
-    padding: 6px 12px;
+    padding: 8px 12px;
   }
 }

@@ -1,0 +1,107 @@
+/* Same card as the clock's: surface, hairline, generous radius */
+.carte {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 260px;
+  padding: 20px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.lieu {
+  color: rgba(var(--ink), 0.75);
+  font-size: 15px;
+}
+
+.maintenant {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icone {
+  flex: none;
+  color: rgb(var(--accent));
+}
+
+/* The temperature in the display face, like the clock's time */
+.temperature {
+  color: rgb(var(--ink));
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ciel {
+  margin-top: 4px;
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  font-size: 14px;
+}
+
+.details {
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 13px;
+}
+
+.mesures {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.mesures dt {
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 12px;
+}
+
+.mesures dd {
+  margin-top: 2px;
+  color: rgb(var(--ink));
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.heures {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  list-style: none;
+}
+
+.heure {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: rgba(var(--ink), 0.8);
+}
+
+.h {
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 12px;
+}
+
+.t {
+  color: rgb(var(--ink));
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.source {
+  justify-self: start;
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 12px;
+  text-underline-offset: 3px;
+}
+
+.source:hover {
+  color: rgb(var(--ink));
+}

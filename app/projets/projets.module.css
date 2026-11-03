@@ -1,82 +1,48 @@
-.title {
-  color: white;
-  font-size: 3.5rem;
-  text-align: center;
-  background: linear-gradient(135deg, #fff 0%, rgb(97, 167, 213) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInDown 0.8s ease-out;
-}
+/* Shared by the home page and the projects list */
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.title {
+  font-family: var(--font-display);
+  color: rgb(var(--ink));
+  font-size: 3.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
 .container {
   min-height: 100vh;
   padding: 120px 20px 80px;
-  background: #000;
-  align-items: center;
-  justify-content: center;
+  background: var(--page);
   position: relative;
-  overflow: hidden;
-}
-
-.container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle at center,
-    rgba(33, 122, 255, 0.15) 0%,
-    transparent 50%
-  );}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 0.8;
-  }
 }
 
 .description {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--ink), var(--a-moyen));
   font-size: 1.1rem;
   text-align: center;
   margin-bottom: 3rem;
   line-height: 1.6;
-  animation: fadeIn 1s ease-out 0.2s backwards;
 }
 
-@keyframes fadeIn {
+/* The single entrance on load */
+@keyframes entree {
   from {
     opacity: 0;
+    transform: translateY(8px);
   }
-  to {
-    opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .title {
+    animation: entree 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .description {
+    animation: entree 420ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    padding: 100px 20px 60px;
-  }
-
   .title {
     font-size: 2.5rem;
   }
@@ -86,55 +52,203 @@
     margin-bottom: 2rem;
   }
 }
+
+/* ---------- Home: the strip of every project ---------- */
+
+.bande {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+}
+
+.bandeListe {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+}
+
+.tuile {
+  display: grid;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.tuileCover {
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  transition: border-color 150ms ease-out;
+}
+
+.tuile:hover .tuileCover {
+  border-color: rgba(var(--accent), 0.5);
+}
+
+.tuileTitre {
+  color: rgba(var(--ink), 0.7);
+  font-size: 12px;
+  line-height: 1.3;
+  transition: color 150ms ease-out;
+}
+
+.tuile:hover .tuileTitre {
+  color: rgb(var(--ink));
+}
+
+@media (max-width: 960px) {
+  .bandeListe {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* On phones the strip becomes one swipeable row, so the featured cards stay close */
+@media (max-width: 480px) {
+  .bande {
+    margin: 0 -20px 48px;
+  }
+
+  .bandeListe {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    padding: 0 20px 8px;
+    scrollbar-width: none;
+  }
+
+  .bandeListe li {
+    flex: 0 0 140px;
+    scroll-snap-align: start;
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 28px;
+  gap: 24px;
   max-width: 1200px;
-  margin: 0 auto 60px;
-  position: relative;
-  z-index: 1;
+  margin: 0 auto 64px;
 }
 
 .sousTitre {
   max-width: 1200px;
   margin: 0 auto 24px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(var(--ink), 0.85);
   font-size: 1.3rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-weight: 500;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  z-index: 1;
+  border-bottom: 1px solid var(--line);
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  position: relative;
-  z-index: 1;
 }
 
 .lien {
   display: inline-block;
-  padding: 14px 30px;
+  padding: 12px 28px;
   text-decoration: none;
-  color: white;
-  font-weight: 600;
-  border-radius: 12px;
-  border: 1px solid rgba(97, 167, 213, 0.4);
-  background: linear-gradient(
-    135deg,
-    rgba(97, 167, 213, 0.2),
-    rgba(97, 167, 213, 0.07)
-  );
-  transition: all 0.3s ease;
+  color: rgb(var(--ink));
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--accent), 0.4);
+  background: rgba(var(--accent), 0.12);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
 }
 
 .lien:hover {
-  transform: translateY(-2px);
-  border-color: rgba(97, 167, 213, 0.7);
+  background: rgba(var(--accent), 0.2);
+  border-color: rgba(var(--accent), 0.7);
+}
+
+/*
+ * The home page's call to action, ringed in liquid metal tinted with the site's
+ * accent (mixed from --accent, so it follows the chosen creature): stripes that flow round the pill, with a light blue sheen where they cross. An explicit
+ * exception to the flat style (2026-11-03). Hover adds a second turn on top of
+ * the first, so the flow speeds up without jumping; a press gives a short
+ * flash. With reduced motion the ring holds still.
+ */
+@keyframes metal-a {
+  to {
+    --metal-a: 360deg;
+  }
+}
+
+@keyframes metal-b {
+  to {
+    --metal-b: 360deg;
+  }
+}
+
+.lienMetal {
+  display: inline-block;
+  padding: 13px 30px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  color: rgb(var(--ink));
+  font-weight: 500;
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, rgba(var(--accent), var(--face, 0.18)), rgba(var(--accent), 0.06)) padding-box,
+    linear-gradient(var(--metal-face), var(--metal-face)) padding-box,
+    conic-gradient(
+        from calc(-1 * (var(--metal-a, 0deg) + var(--metal-b, 0deg))),
+        transparent 0deg,
+        rgba(var(--bleu-texte), 0.45) 30deg,
+        transparent 60deg,
+        transparent 180deg,
+        rgba(var(--accent), 0.45) 210deg,
+        transparent 240deg
+      )
+      border-box,
+    conic-gradient(
+        from calc(var(--metal-a, 0deg) + var(--metal-b, 0deg)),
+        color-mix(in srgb, rgb(var(--accent)) 45%, #000),
+        color-mix(in srgb, rgb(var(--accent)) 15%, #fff) 9%,
+        color-mix(in srgb, rgb(var(--accent)) 80%, #000) 17%,
+        color-mix(in srgb, rgb(var(--accent)) 45%, #fff) 25%,
+        color-mix(in srgb, rgb(var(--accent)) 28%, #000) 35%,
+        color-mix(in srgb, rgb(var(--accent)) 60%, #fff) 47%,
+        color-mix(in srgb, rgb(var(--accent)) 62%, #000) 58%,
+        color-mix(in srgb, rgb(var(--accent)) 30%, #fff) 70%,
+        color-mix(in srgb, rgb(var(--accent)) 33%, #000) 82%,
+        color-mix(in srgb, rgb(var(--accent)) 70%, #fff) 92%,
+        color-mix(in srgb, rgb(var(--accent)) 45%, #000)
+      )
+      border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(var(--bleu-texte), 0.12),
+    0 8px 24px var(--ombre-metal, rgba(0, 0, 0, 0.45));
+  transition:
+    transform 120ms ease-out,
+    filter 200ms ease-out;
+}
+
+.lienMetal:hover {
+  --face: 0.28;
+}
+
+.lienMetal:active {
+  transform: scale(0.97);
+  filter: brightness(1.3);
+}
+
+.lienMetal:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lienMetal {
+    animation:
+      metal-a 6s linear infinite,
+      metal-b 1.6s linear infinite paused;
+  }
+
+  .lienMetal:hover,
+  .lienMetal:focus-visible {
+    animation-play-state: running, running;
+  }
 }
 
 .description {

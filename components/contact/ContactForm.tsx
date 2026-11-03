@@ -1,26 +1,52 @@
 "use client"
 
 import { useState, useRef } from 'react'
+import BestioleJoie from '@/components/accueil/BestioleJoie'
+import { annoncer } from '@/components/layout/annonces'
 import styles from './ContactForm.module.css'
+
+type Champ = 'name' | 'email' | 'message'
+type Erreurs = Partial<Record<Champ, string>>
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function valider(data: Record<Champ, string>): Erreurs {
+  const erreurs: Erreurs = {}
+  if (!data.name.trim()) erreurs.name = 'Indiquez votre nom'
+  if (!data.email.trim()) erreurs.email = 'Indiquez votre adresse email'
+  else if (!EMAIL.test(data.email.trim())) erreurs.email = 'Adresse invalide, par exemple nom@domaine.fr'
+  if (!data.message.trim()) erreurs.message = 'Écrivez votre message'
+  return erreurs
+}
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<'success' | 'error'>('success')
-  const formRef = useRef<HTMLFormElement>(null) 
+  const [erreurs, setErreurs] = useState<Erreurs>({})
+  const formRef = useRef<HTMLFormElement>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLoading(true)
     setMessage('')
 
     const formData = new FormData(e.currentTarget)
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message')
+      name: String(formData.get('name') ?? ''),
+      email: String(formData.get('email') ?? ''),
+      message: String(formData.get('message') ?? ''),
     }
 
+    // Each error is shown under its field, and focus goes to the first one
+    const trouvees = valider(data)
+    setErreurs(trouvees)
+    const premier = (Object.keys(trouvees) as Champ[])[0]
+    if (premier) {
+      formRef.current?.querySelector<HTMLElement>(`#${premier}`)?.focus()
+      return
+    }
+
+    setLoading(true)
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -31,27 +57,43 @@ export default function ContactForm() {
       const result = await res.json()
 
       if (res.ok) {
-        setMessage(' Message envoyé avec succès !')
+        setMessage('Message envoyé')
+        annoncer('Message envoyé')
         setMessageType('success')
-        formRef.current?.reset() 
+        formRef.current?.reset()
       } else {
-        setMessage(`${result.error || 'Erreur'}`)
+        setMessage(result.error || 'Le message n’a pas pu être envoyé')
         setMessageType('error')
       }
     } catch (error) {
       console.error('Erreur:', error)
-      setMessage(' Erreur de connexion')
+      setMessage('Connexion impossible, le message n’a pas été envoyé')
       setMessageType('error')
     }
 
     setLoading(false)
   }
 
+  const champ = (id: Champ) => ({
+    id,
+    name: id,
+    'aria-invalid': erreurs[id] ? true : undefined,
+    'aria-describedby': erreurs[id] ? `${id}-erreur` : undefined,
+  })
+
+  const erreur = (id: Champ) =>
+    erreurs[id] && (
+      <p id={`${id}-erreur`} className={styles.fieldError}>
+        {erreurs[id]}
+      </p>
+    )
+
   return (
-    <form 
-      ref={formRef} 
-      className={styles.form} 
+    <form
+      ref={formRef}
+      className={styles.form}
       onSubmit={handleSubmit}
+      noValidate
     >
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.label}>
@@ -59,12 +101,12 @@ export default function ContactForm() {
         </label>
         <input
           type="text"
-          id="name"
-          name="name"
           placeholder="Entrez votre nom"
-          required
+          autoComplete="name"
           className={styles.input}
+          {...champ('name')}
         />
+        {erreur('name')}
       </div>
 
       <div className={styles.formGroup}>
@@ -73,12 +115,12 @@ export default function ContactForm() {
         </label>
         <input
           type="email"
-          id="email"
-          name="email"
           placeholder="votre@email.com"
-          required
+          autoComplete="email"
           className={styles.input}
+          {...champ('email')}
         />
+        {erreur('email')}
       </div>
 
       <div className={styles.formGroup}>
@@ -86,32 +128,34 @@ export default function ContactForm() {
           Message
         </label>
         <textarea
-          id="message"
-          name="message"
           placeholder="Votre message..."
-          required
           rows={6}
           className={styles.textarea}
+          {...champ('message')}
         />
+        {erreur('message')}
       </div>
 
-      <button 
-        type="submit" 
+      <button
+        type="submit"
         disabled={loading}
         className={styles.button}
       >
         {loading ? (
-          <div className={styles.spinner}></div>
+          <div className={styles.spinner} aria-label="Envoi en cours"></div>
         ) : (
           'Envoyer'
         )}
       </button>
 
-      {message && (
-        <div className={`${styles.message} ${styles[messageType]}`}>
-          {message}
-        </div>
-      )}
+      <div role="status">
+        {message && (
+          <div className={`${styles.message} ${styles[messageType]}`}>
+            {messageType === 'success' && <BestioleJoie />}
+            {message}
+          </div>
+        )}
+      </div>
     </form>
   )
 }

@@ -1,0 +1,358 @@
+/* The creature's desk, next to the globe; the playing track, if any, goes under the scene */
+.carte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* The whole scene is the button: click (or Enter) and it jumps */
+.scene {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--bestiole-mur, #121215);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.scene:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 3px;
+}
+
+.svg {
+  display: block;
+  width: 256px;
+  height: 192px;
+}
+
+/* Walking: the horizontal move is a linear transition whose length the script sets */
+.position {
+  transition-property: transform;
+  transition-timing-function: linear;
+}
+
+.corps {
+  transform-box: fill-box;
+}
+
+/*
+ * Its life in pixels. steps() keeps every move on whole pixels, like an old
+ * game sprite. Everything stops when the system asks for reduced motion.
+ */
+@keyframes rebond {
+  50% {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes saut {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(1px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  90% {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes zzz {
+  from {
+    transform: translate(0, 2px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(2px, -4px);
+    opacity: 0;
+  }
+}
+
+@keyframes respire {
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes plante {
+  50% {
+    transform: translateX(1px);
+  }
+}
+
+/* Code lines scroll up the laptop screen */
+@keyframes defile {
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+/* A sip: leans in towards the mug, then back */
+@keyframes gorgee {
+  0%,
+  60%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20%,
+  40% {
+    transform: translate(-1px, 1px);
+  }
+}
+
+@keyframes vapeur {
+  from {
+    transform: translateY(1px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-2px);
+    opacity: 0;
+  }
+}
+
+/* Rain and snow fall by whole pixels; the drops repeat every 4 px */
+@keyframes chute {
+  to {
+    transform: translateY(4px);
+  }
+}
+
+/* A flash of lightning now and then */
+@keyframes eclair {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+  }
+  90%,
+  94% {
+    opacity: 1;
+  }
+}
+
+/* Asleep: one pixel lower, legs tucked in */
+.dort {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marche {
+    animation: rebond 360ms steps(2, end) infinite;
+  }
+
+  .saut {
+    animation: saut 800ms steps(8, end);
+  }
+
+  /* Typing: quick little bobs, eyes on the screen */
+  .tape {
+    animation: rebond 240ms steps(2, end) infinite;
+  }
+
+  .gorgee {
+    animation: gorgee 1.6s steps(5, end) infinite;
+  }
+
+  .dort {
+    animation: respire 2.4s steps(2, end) infinite;
+  }
+
+  .codeRapide {
+    animation: defile 1.2s steps(3, end) infinite;
+  }
+
+  .codeLent {
+    animation: defile 4s steps(3, end) infinite;
+  }
+
+  .vapeur {
+    animation: vapeur 2.4s steps(4, end) infinite;
+  }
+
+  .vapeurForte {
+    animation: vapeur 1.2s steps(4, end) infinite;
+  }
+
+  .pluie {
+    animation: chute 400ms steps(4, end) infinite;
+  }
+
+  .neige {
+    animation: chute 2s steps(4, end) infinite;
+  }
+
+  .eclair {
+    animation: eclair 5s steps(1, end) infinite;
+  }
+
+  .zzz {
+    animation: zzz 2.6s steps(6, end) infinite;
+  }
+
+  .plante {
+    transform-box: fill-box;
+    animation: plante 3.2s steps(2, end) infinite;
+  }
+}
+
+@media (max-width: 600px) {
+  .svg {
+    width: 224px;
+    height: 168px;
+  }
+}
+
+/* Music: it nods to the beat, and notes drift up beside it */
+@keyframes hoche {
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes notes {
+  from {
+    transform: translate(0, 2px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(2px, -5px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hoche {
+    animation: hoche 500ms steps(2, end) infinite;
+  }
+
+  .notes {
+    animation: notes 1.8s steps(6, end) infinite;
+  }
+}
+
+/* The track playing, under the scene; one line, cut with an ellipsis */
+.ecoute {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 256px;
+  max-width: 100%;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+.pochette {
+  flex: none;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.ecouteTexte {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ecouteLibelle {
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  font-size: 12px;
+}
+
+.ecouteTitre {
+  overflow: hidden;
+  color: rgb(var(--ink));
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ecouteArtiste {
+  color: rgba(var(--ink), var(--a-moyen));
+}
+
+.ecoute:hover .ecouteTitre {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .ecoute {
+    width: 224px;
+  }
+}
+
+/*
+ * The creature picker: four little heads under the scene, faint until the card
+ * is hovered or focused, so it stays a discovery rather than a control panel.
+ */
+.choix {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  opacity: 0.35;
+  transition: opacity 200ms ease-out;
+}
+
+.carte:hover .choix,
+.choix:focus-within {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .choix {
+    opacity: 0.7;
+  }
+}
+
+.pastille {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.pastille svg {
+  width: 24px;
+  height: 22px;
+}
+
+.pastille:hover {
+  background: rgba(var(--ink), 0.06);
+}
+
+.pastille[aria-pressed='true'] {
+  border-color: rgba(var(--accent), 0.6);
+  background: rgba(var(--accent), 0.12);
+}

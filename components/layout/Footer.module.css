@@ -1,28 +1,26 @@
-
-.main {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  background-color: rgb(0, 0, 0);
-  min-height: 100vh;
-}
-
 .footer {
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 40px 20px;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: black;
+  border-top: 1px solid var(--line);
+  background: var(--page);
 }
 
 .footerText {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--ink), var(--a-faible));
   font-size: 14px;
   font-weight: 400;
-  transition: color 0.2s ease;
 }
 
-.footerText:hover {
-  color: rgba(255, 255, 255, 0.8);
+.sep {
+  margin: 0 8px;
 }
 
+.lien {
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  text-underline-offset: 3px;
+  transition: color 150ms ease-out;
+}
+
+.lien:hover {
+  color: rgb(var(--ink));
+}

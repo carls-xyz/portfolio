@@ -1,97 +1,73 @@
+/* Same centred detail panel as before: opaque, a hairline, no blur or glow */
 .container {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  background: rgba(15, 15, 15, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--line);
   padding: 40px;
-  margin : 130px 40px;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 100px rgba(26, 74, 145, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  margin: 128px 40px;
   position: relative;
   overflow: hidden;
-  animation: slideUp 0.8s ease-out 0.4s backwards;
 }
 
-@keyframes slideUp {
+@keyframes entree {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(8px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+/* Its own entrance only on a plain load: when the card grows into it, that is the entrance */
+@media (prefers-reduced-motion: no-preference) {
+  :global(:root:not(:active-view-transition)) .container {
+    animation: entree 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
 .title {
-  color: white;
+  font-family: var(--font-display);
+  color: rgb(var(--ink));
   font-size: 2rem;
+  font-weight: 500;
   text-align: center;
-  background: linear-gradient(135deg, #fff 0%, rgb(97, 167, 213) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .description {
   font-size: 1rem;
-  color: rgba(194, 221, 230, 0.7);
+  color: rgba(var(--gris-bleu), 0.75);
   margin-top: 20px;
   text-align: center;
 }
 
 .back {
-display: inline-block;
-margin-right: auto;
-padding: 10px 20px;
-text-decoration: none;
-color: white;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.048),
-    rgba(255, 255, 255, 0.048)
-  );
-
-  /* Bord réfractif lumineux */
-  border-radius : 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
-    0 8px 40px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  margin-right: auto;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: rgb(var(--ink));
+  font-size: 14px;
+  background: rgba(var(--ink), 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--ink), 0.12);
+  transition: background-color 150ms ease-out;
 }
 
 .back:hover {
-    background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0)
-  );
-  transform: translateY(-2px);
-    transition: all 0.3s ease ;
+  background: rgba(var(--ink), 0.1);
 }
 
 .image {
-display: block;
-  margin: 0 auto;
-  max-width: 300px;
+  display: block;
+  margin: 20px auto 0;
+  max-width: 600px;
   width: 100%;
   height: auto;
-  border-radius: 15px;
-  margin-top: 20px;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(var(--ink), 0.08);
 }
+
 .header {
   display: flex;
   flex-direction: column;
@@ -102,53 +78,47 @@ display: block;
 .meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .badge {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: rgba(186, 215, 253, 0.9);
-  background: rgba(97, 167, 213, 0.12);
-  border: 1px solid rgba(97, 167, 213, 0.3);
-  border-radius: 999px;
-  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(var(--bleu-texte), 0.9);
+  background: rgba(var(--accent), 0.12);
+  border: 1px solid rgba(var(--accent), 0.3);
+  border-radius: 6px;
+  padding: 2px 8px;
 }
 
 .annee {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--ink), var(--a-moyen));
+  font-variant-numeric: tabular-nums;
 }
 
 .tagline {
-  color: rgba(186, 215, 253, 0.75);
+  color: rgba(var(--bleu-texte), var(--a-lien));
   font-size: 1.05rem;
   text-align: center;
   margin: 0;
 }
 
-.image {
-  max-width: 600px;
-}
-
 .section {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   max-width: 720px;
   margin: 0 auto;
 }
 
 .sectionTitle {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(var(--ink), 0.9);
   font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .points {
@@ -157,13 +127,13 @@ display: block;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .point {
   position: relative;
-  padding-left: 22px;
-  color: rgba(194, 221, 230, 0.75);
+  padding-left: 24px;
+  color: rgba(var(--gris-bleu), 0.75);
   font-size: 0.98rem;
   line-height: 1.6;
   text-align: left;
@@ -174,16 +144,16 @@ display: block;
   position: absolute;
   left: 0;
   top: 9px;
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 2px;
-  background: rgb(97, 167, 213);
+  background: rgb(var(--accent));
 }
 
 .stack {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -191,36 +161,56 @@ display: block;
 
 .techno {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 6px 14px;
+  color: rgba(var(--ink), 0.7);
+  background: rgba(var(--ink), 0.05);
+  border: 1px solid rgba(var(--ink), 0.1);
+  border-radius: 6px;
+  padding: 4px 12px;
 }
 
 .lien {
   align-self: center;
-  padding: 12px 26px;
+  padding: 12px 24px;
   text-decoration: none;
-  color: white;
-  font-weight: 600;
-  border-radius: 12px;
-  border: 1px solid rgba(97, 167, 213, 0.4);
-  background: linear-gradient(
-    135deg,
-    rgba(97, 167, 213, 0.2),
-    rgba(97, 167, 213, 0.07)
-  );
-  transition: all 0.3s ease;
+  color: rgb(var(--ink));
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--accent), 0.4);
+  background: rgba(var(--accent), 0.12);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
 }
 
 .lien:hover {
-  transform: translateY(-2px);
-  border-color: rgba(97, 167, 213, 0.7);
+  background: rgba(var(--accent), 0.2);
+  border-color: rgba(var(--accent), 0.7);
 }
 
 .description {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* One dot per context, so the grid reads at a glance: personal, course, team */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  /* Category colours stay fixed whatever creature sets the accent: blue is "personnel" */
+  background: rgb(97, 167, 213);
+}
+
+.badge[data-contexte='Projet de cours']::before {
+  background: rgb(134, 190, 150);
+}
+
+.badge[data-contexte="Projet d'équipe"]::before {
+  background: rgb(214, 170, 96);
 }

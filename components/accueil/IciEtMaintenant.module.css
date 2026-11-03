@@ -1,0 +1,156 @@
+/* A card under the project strip: the globe on the left, place and live time on the right */
+.carte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  max-width: 100%;
+  padding: 20px 32px 20px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* The globe you can turn: grab cursor, and only horizontal touch drags are ours */
+.scene {
+  flex: none;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.scene:active {
+  cursor: grabbing;
+}
+
+.scene:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 4px;
+}
+
+.globe {
+  display: block;
+  width: 168px;
+  height: 168px;
+}
+
+.contour {
+  fill: #0c0c0d;
+  stroke: var(--line);
+}
+
+/* Paris: a white dot with a thin ring, no glow */
+.anneau {
+  fill: none;
+  stroke: rgba(var(--ink), 0.5);
+  stroke-width: 1;
+}
+
+.paris {
+  fill: white;
+}
+
+.infos {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  text-align: left;
+  max-width: 300px;
+}
+
+.lieu {
+  color: rgba(var(--ink), 0.75);
+  font-size: 15px;
+}
+
+.heure {
+  color: rgb(var(--ink));
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statut {
+  color: rgba(var(--bleu-texte), 0.9);
+  font-size: 14px;
+}
+
+.retour {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(var(--bleu-texte), 0.9);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.retour:hover {
+  color: rgb(var(--ink));
+}
+
+/* On arrival only, the dots fill in from west to east */
+@keyframes point {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entree .point {
+    animation: point 600ms calc(300ms + var(--x) * 600ms) ease-out both;
+  }
+}
+
+@media (max-width: 600px) {
+  .carte {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+  }
+
+  .infos {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .globe {
+    width: 160px;
+    height: 160px;
+  }
+
+  .heure {
+    font-size: 36px;
+  }
+}
+
+/* In a narrow place of the home page's widget grid: the same stacked layout as on phones */
+@container (max-width: 440px) {
+  .carte {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+  }
+
+  .infos {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .globe {
+    width: 160px;
+    height: 160px;
+  }
+
+  .heure {
+    font-size: 36px;
+  }
+}

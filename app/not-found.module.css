@@ -1,73 +1,60 @@
 .container {
   min-height: 100vh;
   padding: 120px 20px 80px;
-  background: #000;
+  background: var(--page);
   position: relative;
-  overflow: hidden;
   display: flex;
-  flex-direction: column; 
-  align-items: center;   
-  justify-content: center; 
-  text-align: center;    
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .title {
-  color: white;
+  font-family: var(--font-display);
+  color: rgb(var(--ink));
   font-size: 3.5rem;
+  font-weight: 500;
   text-align: center;
-  background: linear-gradient(135deg, #fff 0%, rgb(44, 134, 194) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .subtitle {
   font-size: 1.5rem;
-  color: rgba(194, 221, 230, 0.7);
+  color: rgba(var(--gris-bleu), 0.75);
   margin-bottom: 1rem;
   text-align: center;
 }
 
 .text {
   font-size: 1.2rem;
-  color: rgba(194, 221, 230, 0.7);
+  color: rgba(var(--gris-bleu), 0.75);
   margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .link {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgb(var(--ink));
   text-decoration: none;
   font-size: 16px;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  font-weight: 500;
   padding: 8px 16px;
   border-radius: 10px;
   display: block;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0)
-  );
-
-  /* Bord réfractif lumineux */
-  border: 1px solid rgba(255, 255, 255, 0.091);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.426) inset,
-    0 8px 40px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  background: rgba(var(--ink), 0.05);
+  border: 1px solid rgba(var(--ink), 0.12);
+  transition: background-color 150ms ease-out;
 }
 
 .link:hover {
-  color: white;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0)
-  );
-    transform: translateY(-2px);
-    transition: all 0.3s ease ;
+  background: rgba(var(--ink), 0.1);
+}
+
+/* The dark room where the creature searches, above the code */
+.ecran {
+  position: relative;
+  width: min(360px, 100%);
+  margin-bottom: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  overflow: hidden;
 }

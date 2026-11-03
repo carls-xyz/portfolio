@@ -1,186 +1,184 @@
 @import "tailwindcss";
 
+/*
+ * Base. The original direction is kept (dark page, white text, one blue
+ * accent); the design-skill pass only removed
+ * its generic effects: glass, glows, gradient text, colour washes, entrance
+ * animations everywhere and hover lifts.
+ */
+
+/*
+ * Colour tokens. Dark is the site's own direction and the default; the light
+ * theme (toggle in the nav, saved per visitor) swaps the same roles. Text and
+ * hairlines are --ink at an opacity, so one value flips them all.
+ */
+/* Light graphite planes: still dark, but each layer separates from the one below */
+:root {
+  color-scheme: dark;
+  --page: #111113;
+  --surface: #1a1a1d;
+  --surface-raised: #232327;
+  --ink: 255, 255, 255;
+  --line: rgba(var(--ink), 0.12);
+  /*
+   * The accent, set by the creature the visitor picked on the home page (blue
+   * by default; see the [data-bestiole] blocks below): the colour itself, a
+   * light version for text on dark, a deep one for text on light.
+   */
+  --accent: 97, 167, 213;
+  --accent-clair: 186, 215, 253;
+  --accent-sombre: 30, 96, 146;
+  /* Accent-coloured text, blue-grey for secondary text, the focus ring */
+  --bleu-texte: var(--accent-clair);
+  --gris-bleu: 194, 221, 230;
+  --focus: var(--accent);
+  --metal-face: #131619;
+  /* Opacities for muted text: dark ink on paper needs a little more to stay readable */
+  --a-faible: 0.5;
+  --a-moyen: 0.6;
+  --a-lien: 0.85;
+  /* Display voice for large titles only; body text keeps the system font */
+  --font-display: 'Space Grotesk Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Warm paper planes, near-black ink, the same blue darkened enough to read as text */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #f2f1ed;
+  --surface: #fbfaf7;
+  --surface-raised: #ffffff;
+  --ink: 24, 26, 30;
+  --bleu-texte: var(--accent-sombre);
+  --gris-bleu: 50, 62, 70;
+  --focus: var(--accent-sombre);
+  --metal-face: #eef3f8;
+  --a-faible: 0.66;
+  --a-moyen: 0.72;
+  --a-lien: 1;
+}
+
+/* The other creatures and their accents (components/accueil/bestioles.ts) */
+:root[data-bestiole='mousse'] {
+  --accent: 126, 191, 122;
+  --accent-clair: 196, 232, 190;
+  --accent-sombre: 36, 96, 44;
+}
+
+:root[data-bestiole='braise'] {
+  --accent: 238, 138, 82;
+  --accent-clair: 250, 205, 175;
+  --accent-sombre: 146, 60, 16;
+}
+
+:root[data-bestiole='guimauve'] {
+  --accent: 228, 140, 176;
+  --accent-clair: 247, 200, 220;
+  --accent-sombre: 160, 50, 100;
+}
+
+/* Every drawing of the creature holds the four shapes; only the chosen one shows */
+[data-forme] {
+  display: none;
+}
+
+:root:not([data-bestiole]) [data-forme='bleu'],
+:root[data-bestiole='mousse'] [data-forme='mousse'],
+:root[data-bestiole='braise'] [data-forme='braise'],
+:root[data-bestiole='guimauve'] [data-forme='guimauve'] {
+  display: inline;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  background-color: rgb(0, 0, 0);
+  background-color: var(--page);
   min-height: 100vh;
-  color: white;
+  color: rgb(var(--ink));
 }
 
-.main {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  background-color: rgb(0, 0, 0);
-  min-height: 100vh;
+:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 2px;
 }
 
-.header {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  width: fit-content;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.menu {
-  display: flex;
-  gap: 32px;
-  align-items: center;
-  
-  background: linear-gradient(135deg, rgba(26, 74, 145, 0.08), rgba(37, 69, 129, 0.05));
-  backdrop-filter: blur(80px) saturate(180%);
-  -webkit-backdrop-filter: blur(80px) saturate(180%);
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
-              0 1px 2px rgba(0, 0, 0, 0.05),
-              inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  
-  padding: 12px 32px;
-}
-
-.link-menu {
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
-  padding: 8px 16px;
-  border-radius: 12px;
-}
-
-.link-menu:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.link-menu:active {
-  transform: scale(0.98);
-}
-
-.hero-section{
-  min-height: 100vh;
-  padding: 120px 20px 80px;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: '';
+/* Lien d'évitement : visible seulement au clavier */
+.skip-link {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle at center,
-    rgba(26, 74, 145, 0.15) 0%,
-    transparent 50%
-  );
-  pointer-events: none;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 0.8;
-  }
-}
-
-.content {
-  max-width: 650px;
-  width: 100%;
-  text-align: center  ;
-  position: relative;
-  z-index: 1;
-}
-
-.title {
-  color: white;
-  font-size: 40px;
-  text-align: center;
-  background: linear-gradient(135deg, #fff 0%, rgb(97, 167, 213) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInDown 0.8s ease-out;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.presentation {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1.1rem;
-  text-align: center;
-}
-
-.container {
-  min-height: 100vh;
-  padding: 120px 20px 80px;
-  background: #000;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle at center,
-    rgba(33, 122, 255, 0.15) 0%,
-    transparent 50%
-  );
-  pointer-events: none;
-}
-
-.footer {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 40px 20px;
-  text-align: center;
-  border-top: 3px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5));
-}
-
-.footer-text {
-  color: rgba(255, 255, 255, 0.5);
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: white;
+  color: black;
   font-size: 14px;
-  font-weight: 400;
-  transition: color 0.2s ease;
+  text-decoration: none;
+  transform: translateY(-200%);
 }
 
-.footer-text:hover {
-  color: rgba(255, 255, 255, 0.8);
+.skip-link:focus-visible {
+  transform: none;
 }
 
+/* Page transitions: the shared cover glides, the rest crossfades quickly. Off when motion is unwelcome. */
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+}
+
+/* Theme switch: the new page grows in a circle from the button (Theme.tsx), nothing else moves */
+:root[data-transition='theme']::view-transition-old(*),
+:root[data-transition='theme']::view-transition-new(*),
+:root[data-transition='theme']::view-transition-group(*) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* The liquid metal ring (projets.module.css .lienMetal) turns these two angles */
+@property --metal-a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --metal-b {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* The creature's room: a dark wall at night-time colours, a pale one in the light theme */
+:root[data-theme='light'] {
+  --bestiole-mur: #dde3e8;
+  --ombre-metal: rgba(30, 60, 90, 0.18);
+}
+
+/*
+ * A project card growing into its page (and back): the box grows, and both
+ * snapshots keep their own proportions, pinned to the top, instead of being
+ * stretched; they crossfade inside it.
+ */
+::view-transition-old(.carte),
+::view-transition-new(.carte) {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}

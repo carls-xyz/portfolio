@@ -1,0 +1,139 @@
+.diff {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* A dark code window in both themes */
+.cadre {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0e0f12;
+  overflow: hidden;
+}
+
+.barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fichier {
+  color: rgba(255, 255, 255, 0.65);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.bascule {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.choix {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
+}
+
+.choix[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.code {
+  margin: 0;
+  padding: 12px 0;
+  overflow-x: auto;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Each line folds by its row height, so lines from the other version close up */
+.ligne {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.repli {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 16px;
+  white-space: pre;
+}
+
+.marque {
+  display: inline-block;
+  width: 1.5ch;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.cadre[data-cote='avant'] .ligne[data-cote='apres'],
+.cadre[data-cote='apres'] .ligne[data-cote='avant'] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+/* The lines that differ, tinted on their own side */
+.cadre[data-cote='avant'] .ligne[data-cote='avant'] {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.cadre[data-cote='avant'] .ligne[data-cote='avant'] .marque {
+  color: rgb(248, 113, 113);
+}
+
+.cadre[data-cote='apres'] .ligne[data-cote='apres'] {
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.cadre[data-cote='apres'] .ligne[data-cote='apres'] .marque {
+  color: rgb(74, 222, 128);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ligne {
+    transition:
+      grid-template-rows 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 240ms ease-out,
+      background-color 240ms ease-out;
+  }
+}
+
+.notes {
+  display: grid;
+  gap: 6px;
+  padding-left: 18px;
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.source {
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  font-size: 14px;
+  text-underline-offset: 3px;
+}
+
+.source:hover {
+  color: rgb(var(--ink));
+}

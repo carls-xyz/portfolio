@@ -9,6 +9,8 @@ export type Projet = {
   contexte: Contexte;
   /** Ce que j'ai personnellement développé, pour les projets réalisés à plusieurs. */
   role?: string;
+  /** Ma part en quelques mots, affichée sur les cartes (résumé de `role`). */
+  part?: string;
   stack: string[];
   points: string[];
   repoUrl?: string;
@@ -64,6 +66,7 @@ export const projets: Projet[] = [
     annee: "2025",
     contexte: "Projet de cours",
     role: "Le squelette du routeur venait du support de cours ; j'ai écrit les entités, les modèles PDO, les trois contrôleurs, l'autoload, le trait de rendu et l'ensemble des vues.",
+    part: "Entités, modèles PDO, contrôleurs, autoload et vues",
     stack: ["PHP 8", "Programmation orientée objet", "PDO", "MySQL"],
     points: [
       "Routeur maison gérant les routes GET et POST, avec réécriture d'URL",
@@ -84,6 +87,7 @@ export const projets: Projet[] = [
     annee: "2026",
     contexte: "Projet d'équipe",
     role: "J'ai développé l'API REST en PHP ainsi que la partie de l'interface qui la consomme : chargement des jeux, filtres, page de détail et habillage rétro gaming. Mon binôme a écrit le nettoyeur CSV et la structure HTML initiale.",
+    part: "L'API REST en PHP et l'interface qui la consomme",
     stack: ["PHP 8", "PDO", "MySQL", "JavaScript", "Node.js"],
     points: [
       "API REST renvoyant du JSON, avec accès par identifiant et filtrage par état",
@@ -121,6 +125,7 @@ export const projets: Projet[] = [
     annee: "2026",
     contexte: "Projet d'équipe",
     role: "Projet réalisé en binôme dans le cadre du cours de sécurité web.",
+    part: "Réalisé en binôme",
     stack: ["PHP 8", "PDO", "MySQL"],
     points: [
       "Jetons anti-CSRF générés en session, vérifiés puis invalidés à chaque soumission",
@@ -140,6 +145,7 @@ export const projets: Projet[] = [
     annee: "2025",
     contexte: "Projet d'équipe",
     role: "J'ai développé la partie « élèves » : le contrôleur, le formulaire avec sélection de la classe, et les templates Twig associés. Mes coéquipiers ont mis en place le squelette, les entités et la partie « classes ».",
+    part: "La partie élèves : contrôleur, formulaire et templates Twig",
     stack: ["Symfony 7", "Doctrine ORM", "Twig", "PHP 8"],
     points: [
       "Entités liées par une relation ManyToOne, gérées avec Doctrine et ses migrations",

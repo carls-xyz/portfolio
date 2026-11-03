@@ -1,0 +1,163 @@
+.cover {
+  display: block;
+  color: rgb(var(--accent));
+  width: 100%;
+  height: auto;
+  aspect-ratio: 600 / 340;
+}
+
+/*
+ * Hovering (or tabbing to) a project card plays its cover's gesture once.
+ * Resting state = final drawing: nothing is hidden when the animation is off,
+ * on touch screens, or when the system asks for reduced motion. No loops.
+ */
+@keyframes trace {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes apparait {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Only the middle step: start and end fall back to each layer's own opacity */
+@keyframes couche {
+  40% {
+    fill-opacity: 0.85;
+  }
+}
+
+@keyframes filtre {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes voyage {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes route {
+  40% {
+    fill-opacity: 1;
+  }
+}
+
+@keyframes parasite {
+  30% {
+    transform: translateX(calc((var(--g) - 1) * 12px));
+    opacity: 0.2;
+  }
+  60% {
+    transform: translateX(calc((1 - var(--g)) * 6px));
+  }
+}
+
+.trace {
+  stroke-dasharray: 1;
+}
+
+.apparait {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.voyageur {
+  opacity: 0;
+  offset-rotate: 0deg;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :global(a:hover) .trace,
+  :global(a:focus-visible) .trace {
+    animation: trace 600ms calc(var(--i, 0) * 60ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  :global(a:hover) .apparait,
+  :global(a:focus-visible) .apparait {
+    animation: apparait 360ms calc(200ms + var(--i, 0) * 60ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  :global(a:hover) .couche,
+  :global(a:focus-visible) .couche {
+    animation: couche 700ms calc(var(--i, 0) * 120ms) ease-out;
+  }
+
+  :global(a:hover) .filtre,
+  :global(a:focus-visible) .filtre {
+    animation: filtre 900ms ease-out;
+  }
+
+  :global(a:hover) .route,
+  :global(a:focus-visible) .route {
+    animation: route 800ms ease-out;
+  }
+
+  :global(a:hover) .parasite,
+  :global(a:focus-visible) .parasite {
+    animation: parasite 360ms steps(3, end);
+  }
+
+  @supports (offset-path: path('M0 0')) {
+    :global(a:hover) .voyageur,
+    :global(a:focus-visible) .voyageur {
+      animation: voyage 1400ms cubic-bezier(0.45, 0, 0.55, 1);
+    }
+  }
+}
+
+/*
+ * The same gestures as an entrance: played once when the page loads, for the
+ * cover of a project page and the first cards of the home page. --retard lets
+ * them follow the title instead of starting with it.
+ */
+.joue {
+  --retard: 0ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .joue .trace {
+    animation: trace 600ms calc(var(--retard) + var(--i, 0) * 60ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .joue .apparait {
+    animation: apparait 360ms calc(var(--retard) + 200ms + var(--i, 0) * 60ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .joue .couche {
+    animation: couche 700ms calc(var(--retard) + var(--i, 0) * 120ms) ease-out;
+  }
+
+  .joue .filtre {
+    animation: filtre 900ms var(--retard) ease-out;
+  }
+
+  .joue .route {
+    animation: route 800ms var(--retard) ease-out;
+  }
+
+  .joue .parasite {
+    animation: parasite 360ms var(--retard) steps(3, end);
+  }
+
+  @supports (offset-path: path('M0 0')) {
+    .joue .voyageur {
+      animation: voyage 1400ms var(--retard) cubic-bezier(0.45, 0, 0.55, 1);
+    }
+  }
+}

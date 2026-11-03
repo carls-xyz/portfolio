@@ -1,0 +1,166 @@
+/* Under the globe and the creature, as wide as the two of them */
+.carte {
+  position: relative;
+  --case: 10px;
+  --ecart: 2px;
+  display: grid;
+  /* Header at the top, legend at the bottom, whatever the row's height */
+  align-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 20px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.titre {
+  color: rgb(var(--ink));
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.total {
+  margin-top: 2px;
+  color: rgba(var(--ink), 0.85);
+  font-size: 14px;
+}
+
+.discret,
+.derniere {
+  color: rgba(var(--ink), var(--a-moyen));
+}
+
+.derniere {
+  font-size: 13px;
+}
+
+.derniere strong {
+  color: rgb(var(--ink));
+  font-weight: 500;
+}
+
+/* Small screens scroll sideways; rtl makes the scroll start at the most recent weeks */
+.defile {
+  overflow-x: auto;
+  direction: rtl;
+  scrollbar-width: none;
+}
+
+.calendrier {
+  display: grid;
+  gap: 6px;
+  width: max-content;
+  margin: 0 auto;
+  direction: ltr;
+}
+
+.mois,
+.jours {
+  display: grid;
+  grid-template-columns: repeat(var(--colonnes), var(--case));
+  column-gap: var(--ecart);
+}
+
+.mois {
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 11px;
+  line-height: 1;
+}
+
+.mois span {
+  white-space: nowrap;
+}
+
+.jours {
+  grid-template-rows: repeat(7, var(--case));
+  grid-auto-flow: column;
+  row-gap: var(--ecart);
+  list-style: none;
+}
+
+/* One square per day: the site's blue, stronger with more contributions */
+.jour {
+  width: var(--case);
+  height: var(--case);
+  border-radius: 3px;
+  background: rgba(var(--ink), 0.1);
+}
+
+.jour[data-niveau='1'] {
+  background: rgba(var(--accent), 0.32);
+}
+
+.jour[data-niveau='2'] {
+  background: rgba(var(--accent), 0.55);
+}
+
+.jour[data-niveau='3'] {
+  background: rgba(var(--accent), 0.8);
+}
+
+.jour[data-niveau='4'] {
+  background: rgb(var(--accent));
+}
+
+/* On arrival only, the squares fill in from the oldest week to the newest */
+@keyframes case {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .jours .jour {
+    animation: case 400ms calc(200ms + var(--x) * 700ms) ease-out both;
+  }
+}
+
+.pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.lien {
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  font-size: 13px;
+  text-underline-offset: 3px;
+}
+
+.lien:hover {
+  color: rgb(var(--ink));
+}
+
+.legende {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 12px;
+}
+
+.legende .jour:first-of-type {
+  margin-left: 4px;
+}
+
+.legende .jour:last-of-type {
+  margin-right: 4px;
+}
+
+@media (max-width: 600px) {
+  .carte {
+    padding: 16px;
+  }
+}

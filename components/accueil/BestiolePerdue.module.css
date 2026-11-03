@@ -1,0 +1,53 @@
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #0b0b0d;
+}
+
+/* At rest (and with reduced motion) it stands in the middle, torch on */
+.ronde {
+  transform: translate(26px, 21px);
+}
+
+/* Across the room, a pause, back again, a pause */
+@keyframes ronde {
+  0%,
+  6% {
+    transform: translate(4px, 21px);
+  }
+  44%,
+  56% {
+    transform: translate(44px, 21px);
+  }
+  94%,
+  100% {
+    transform: translate(4px, 21px);
+  }
+}
+
+/* It turns round during each pause */
+@keyframes demiTour {
+  0%,
+  49% {
+    transform: none;
+  }
+  50%,
+  97% {
+    transform: translateX(12px) scaleX(-1);
+  }
+  98%,
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ronde {
+    animation: ronde 12s linear infinite;
+  }
+
+  .demiTour {
+    animation: demiTour 12s steps(1, end) infinite;
+  }
+}

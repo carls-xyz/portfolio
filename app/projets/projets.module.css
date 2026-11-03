@@ -53,11 +53,30 @@
   }
 }
 
+/* ---------- Home: section titles ---------- */
+
+/* "Mes projets", "Tableau de bord": in the pixel monospace, on the left edge of their section */
+.titreSection {
+  margin-bottom: 16px;
+  color: rgb(var(--ink));
+  font-family: var(--font-section);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* The widget grid's title, on the same edge as the grid (and the project strip above) */
+.titreWidgets {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---------- Home: every project, two rows of four ---------- */
 
-/* Two rows of four rather than one row of eight: tiles about 1.4 times larger, on any screen */
+/* Two rows of four, as wide as the widget grid below so both sections (and their titles) share one edge */
 .bande {
-  max-width: 820px;
+  max-width: 1080px;
   margin: 0 auto 64px;
 }
 
@@ -102,6 +121,11 @@
 @media (max-width: 700px) {
   .bande {
     margin: 0 -20px 48px;
+  }
+
+  /* The strip runs edge to edge here; its title keeps the page margin */
+  .bande .titreSection {
+    padding: 0 20px;
   }
 
   .bandeListe {

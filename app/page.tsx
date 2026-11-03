@@ -19,11 +19,14 @@ export const metadata = {
 export default function Home() {
   return (
     <div className={styles.container}>
-      {/* No visible heading: the page opens straight on the projects; this one is for screen readers and search */}
+      {/* The site's name for screen readers and search; on screen each section has its own title */}
       <h1 className="sr-only">carls-xyz</h1>
 
       {/* Every project at a glance: each tile plays its cover's gesture on hover */}
-      <nav className={styles.bande} aria-label="Tous les projets">
+      <nav className={styles.bande} aria-labelledby="titre-projets">
+        <h2 id="titre-projets" className={styles.titreSection}>
+          Mes projets
+        </h2>
         {/* On small screens the tiles become a swipeable row that drifts on its own */}
         <DefilementAuto className={styles.bandeListe}>
           {projets.map((projet) => (
@@ -38,6 +41,7 @@ export default function Home() {
       </nav>
 
       {/* Where I am and the time there, the creature at its desk, the weather, GitHub activity: visitors can rearrange them */}
+      <h2 className={`${styles.titreSection} ${styles.titreWidgets}`}>Tableau de bord</h2>
       <Widgets
         widgets={[
           { id: "heure", titre: "Heure à Paris", contenu: <IciEtMaintenant /> },

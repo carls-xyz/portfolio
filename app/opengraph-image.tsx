@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og'
 import { BESTIOLES } from '@/components/accueil/bestioles'
-import { projets } from '@/data/projets'
 import { COULEURS, Signature, TAILLE, TYPE, bestioleSvg } from '@/lib/partage'
 
 /* The share image of the home page, and of every page without its own */
@@ -26,12 +25,7 @@ export default function Image() {
       >
         <Signature />
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <span style={{ fontSize: 76, lineHeight: 1.05 }}>Portfolio</span>
-            <span style={{ fontSize: 34, color: COULEURS.secondaire }}>
-              {`Développeur web · ${projets.length} projets`}
-            </span>
-          </div>
+          <span style={{ fontSize: 76, lineHeight: 1.05 }}>Portfolio</span>
           {/* The four creatures a visitor can pick, the first one in front */}
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
             {BESTIOLES.map((b, i) => (

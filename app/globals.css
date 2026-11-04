@@ -193,3 +193,161 @@ body {
   object-fit: cover;
   object-position: top;
 }
+
+/*
+ * ---------- Liquid glass ----------
+ * A material for the few surfaces that sit over real content (the floating nav,
+ * the folders' front panels, the ⌘K palette, the calendar's tooltip). A surface
+ * opts in with the data-verre attribute and four declarations:
+ *   background: var(--verre-fond); backdrop-filter: var(--verre-filtre);
+ *   box-shadow: var(--verre-bord); color: var(--verre-encre);
+ * plus an optional ::before with --verre-reflet / --verre-lueur for the inner
+ * light. components/layout/verre.ts sets data-encre (which ink reads best over
+ * what is behind), --verre-densite, --verre-sat-garde and the rim lens.
+ * Surfaces over the plain page stay solid: glass over a flat colour is just grey.
+ * An explicit exception to the site's no-glass rule, asked for on 2026-11-04.
+ */
+
+/* Numbers registered so a surface glides between states instead of jumping */
+@property --verre-k {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --verre-densite {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --verre-sat-garde {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --verre-survol {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+/* The visitor's tint settings (0 to 1.5, 1 = as designed), one per theme; set by the reglages */
+:root {
+  --verre-reglage-clair: 1;
+  --verre-reglage-sombre: 1;
+}
+
+/* Dark theme: smoked glass that dims like a multiply, edge and inner light at a third */
+[data-verre] {
+  /* Never inherit a lens from a glass surface around this one (the palette sits inside the nav):
+     each surface only gets the one verre.ts sets on it */
+  --verre-lentille: initial;
+  --verre-k: var(--verre-reglage-sombre);
+  --verre-teinte: 20 20 24;
+  --verre-alpha-min: 0.16;
+  --verre-alpha-max: 0.38;
+  --verre-sat: 1.6;
+  --verre-lum: 0.8;
+  --verre-bord:
+    inset 1.5px 1.5px 1px -1px rgb(255 255 255 / 0.32), inset -1.5px -1.5px 1px -1px rgb(255 255 255 / 0.18),
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.1), 0 0 0 0.5px rgb(0 0 0 / 0.5), 0 8px 28px rgb(0 0 0 / 0.35);
+  --verre-reflet: radial-gradient(120% 100% at 0% 0%, rgb(255 255 255 / 0.1), transparent 55%);
+  --verre-lueur:
+    inset 0 1px 6px rgb(255 255 255 / 0.12), inset 1px 0 6px rgb(255 255 255 / 0.07),
+    inset 0 -2px 6px rgb(0 0 0 / 0.15);
+  /* Light ink: everything drawn on the glass adds light */
+  --ink: 255, 255, 255;
+  --verre-encre: rgb(255 255 255 / 0.94);
+  --verre-encre-2: rgb(235 235 245 / 0.64);
+  --verre-melange: plus-lighter;
+
+  /* The material itself, from the tokens above */
+  --verre-alpha: calc(
+    (var(--verre-alpha-min) + (var(--verre-alpha-max) - var(--verre-alpha-min)) * var(--verre-densite)) *
+      var(--verre-k) * var(--verre-survol)
+  );
+  --verre-fond: rgb(var(--verre-teinte) / var(--verre-alpha));
+  /* Below 1 the saturation and brightness shift thin out with the tint; at 0 only blur, rim and shadow remain */
+  --verre-filtre: blur(var(--verre-flou, 2px))
+    saturate(calc(1 + (var(--verre-sat) - 1) * min(var(--verre-k), 1) * var(--verre-sat-garde)))
+    brightness(calc(1 + (var(--verre-lum) - 1) * min(var(--verre-k), 1))) var(--verre-lentille, );
+  transition:
+    --verre-k 400ms ease-out,
+    --verre-densite 400ms ease-out,
+    --verre-sat-garde 400ms ease-out,
+    --verre-survol 200ms ease-out;
+}
+
+/* Light theme, over a light area: clear glass, the colour comes from behind, dark ink */
+:root[data-theme='light'] [data-verre] {
+  --verre-k: var(--verre-reglage-clair);
+  --verre-teinte: 255 255 255;
+  --verre-alpha-min: 0.06;
+  --verre-alpha-max: 0.22;
+  --verre-sat: 1.8;
+  --verre-lum: 1.06;
+  --verre-bord:
+    inset 1.5px 1.5px 1px -1px rgb(255 255 255 / 0.95), inset -1.5px -1.5px 1px -1px rgb(255 255 255 / 0.55),
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.3), 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 6px 24px rgb(0 0 0 / 0.08);
+  --verre-reflet: radial-gradient(120% 100% at 0% 0%, rgb(255 255 255 / 0.3), transparent 55%);
+  --verre-lueur:
+    inset 0 1px 6px rgb(255 255 255 / 0.35), inset 1px 0 6px rgb(255 255 255 / 0.2), inset 0 -2px 6px rgb(0 0 0 / 0.05);
+  --ink: 0, 0, 0;
+  --verre-encre: rgb(0 0 0 / 0.86);
+  --verre-encre-2: rgb(60 60 67 / 0.7);
+  --verre-melange: multiply;
+}
+
+/* Light theme, over a dark area (data-encre set by verre.ts): smoked glass, light ink */
+:root[data-theme='light'] [data-verre][data-encre='claire'] {
+  --verre-teinte: 16 18 22;
+  --verre-alpha-min: 0.1;
+  --verre-alpha-max: 0.3;
+  --verre-sat: 1.7;
+  --verre-lum: 0.85;
+  --verre-bord: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 0 0 0.5px rgb(0 0 0 / 0.35), 0 6px 24px rgb(0 0 0 / 0.18);
+  --verre-reflet: radial-gradient(120% 100% at 0% 0%, rgb(255 255 255 / 0.1), transparent 55%);
+  --verre-lueur: inset 0 1px 6px rgb(255 255 255 / 0.12), inset 0 -2px 6px rgb(0 0 0 / 0.15);
+  --ink: 255, 255, 255;
+  --verre-encre: rgb(255 255 255 / 0.94);
+  --verre-encre-2: rgb(235 235 245 / 0.64);
+  --verre-melange: plus-lighter;
+}
+
+/* What is drawn on the glass blends with it: multiply on light glass, plus-lighter on dark */
+[data-verre] :is(a, span, strong, p, kbd, svg, label, input, h2) {
+  mix-blend-mode: var(--verre-melange);
+}
+
+/* Hover thickens the tint a little instead of lifting a shadow */
+@media (hover: hover) {
+  [data-verre]:hover {
+    --verre-survol: 1.14;
+  }
+}
+
+/* Less transparency asked for: the same tint, solid */
+@media (prefers-reduced-transparency: reduce) {
+  [data-verre] {
+    --verre-fond: rgb(var(--verre-teinte));
+    --verre-filtre: none;
+  }
+}
+
+/* Forced colours: a plain system surface */
+@media (forced-colors: active) {
+  [data-verre] {
+    --verre-fond: Canvas;
+    --verre-filtre: none;
+    --verre-bord: none;
+    --verre-reflet: none;
+    --verre-lueur: none;
+    --verre-encre: CanvasText;
+  }
+
+  [data-verre] :is(a, span, strong, p, kbd, svg, label, input, h2) {
+    mix-blend-mode: normal;
+  }
+}

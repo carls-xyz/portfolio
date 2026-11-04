@@ -190,9 +190,14 @@
   gap: 2px;
   padding: 7px 10px;
   border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--surface-raised);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  isolation: isolate;
+  /* Liquid glass (tokens in globals.css) over the calendar: dense and well blurred, it sits on labels and squares */
+  --verre-flou: 10px;
+  background: var(--verre-fond);
+  -webkit-backdrop-filter: var(--verre-filtre);
+  backdrop-filter: var(--verre-filtre);
+  box-shadow: var(--verre-bord);
+  color: var(--verre-encre);
   font-size: 12px;
   line-height: 1.3;
   white-space: nowrap;
@@ -217,10 +222,22 @@
   left: 50%;
   width: 8px;
   height: 8px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--surface-raised);
+  background: var(--verre-fond);
+  -webkit-backdrop-filter: var(--verre-filtre);
+  backdrop-filter: var(--verre-filtre);
   transform: translate(calc(-50% + var(--fleche, 0px)), -4px) rotate(45deg);
+}
+
+/* The glass's inner light */
+.bulle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--verre-reflet);
+  box-shadow: var(--verre-lueur);
+  pointer-events: none;
 }
 
 @keyframes bulle {

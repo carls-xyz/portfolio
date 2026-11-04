@@ -1,6 +1,7 @@
 "use client"
 
-import { useSyncExternalStore, type CSSProperties } from 'react'
+import { useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { useVerre } from '@/components/layout/verre'
 import { projets, type Contexte } from '@/data/projets'
 import Cover from './Cover'
 import ProjetsCard from './ProjetsCard'
@@ -82,10 +83,10 @@ export default function Dossiers() {
                   </span>
                 ))}
               </span>
-              <span className={styles.face} aria-hidden="true">
+              <Face>
                 <span className={styles.titre}>{d.titre}</span>
                 <span className={styles.compte}>{liste.length} projets</span>
-              </span>
+              </Face>
             </button>
           )
         })}
@@ -106,5 +107,16 @@ export default function Dossiers() {
         )}
       </section>
     </>
+  )
+}
+
+/** A folder's front panel in liquid glass; the three panels share one ink decision */
+function Face({ children }: { children: ReactNode }) {
+  const face = useRef<HTMLSpanElement>(null)
+  useVerre(face, { lentille: true, groupe: 'dossiers', memoire: 'dossiers' })
+  return (
+    <span ref={face} className={styles.face} aria-hidden="true" data-verre="">
+      {children}
+    </span>
   )
 }

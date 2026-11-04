@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useLayoutEffect, useRef } from 'react'
 import Palette from './Palette'
 import Theme from './Theme'
+import { useVerre } from './verre'
 import styles from './Header.module.css'
 
 const LIENS = [
@@ -20,6 +21,9 @@ function actif(pathname: string, href: string) {
 export default function Header() {
   const pathname = usePathname()
   const menu = useRef<HTMLUListElement>(null)
+  const barre = useRef<HTMLElement>(null)
+  // Liquid glass: the content scrolls under the nav, so the ink follows what is behind it
+  useVerre(barre, { lentille: true, memoire: 'nav', suitDefilement: true })
 
   // One pill glides to the current page; it re-measures when the menu resizes
   useLayoutEffect(() => {
@@ -44,7 +48,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <nav className={styles.nav} aria-label="Navigation principale">
+      <nav ref={barre} className={styles.nav} aria-label="Navigation principale" data-verre="">
         <ul ref={menu} className={styles.menu}>
           {LIENS.map(lien => (
             <li key={lien.href}>

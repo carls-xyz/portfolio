@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent, type ReactNode } from 'react'
+import { useVerre } from '@/components/layout/verre'
 import styles from './ActiviteGitHub.module.css'
 
 /*
@@ -18,18 +19,9 @@ const DEMI_BULLE = 100
 export default function BulleCalendrier({ children }: { children: ReactNode }) {
   const zone = useRef<HTMLDivElement>(null)
   const [bulle, setBulle] = useState<Bulle | null>(null)
+  // The day reached from the keyboard, if that is how the bubble opened
+  const auClavier = useRef<Element | null>(null)
 
-  // Any scroll (the page, or the calendar sideways) moves the day away from the bubble: close it
-  useEffect(() => {
-    if (!bulle) return
-    const fermer = () => setBulle(null)
-    window.addEventListener('scroll', fermer, { capture: true, passive: true })
-    window.addEventListener('widgets', fermer)
-    return () => {
-      window.removeEventListener('scroll', fermer, { capture: true })
-      window.removeEventListener('widgets', fermer)
-    }
-  }, [bulle])
 
   const montrer = (cible: EventTarget | null) => {
     const jour = cible instanceof Element ? cible.closest<HTMLElement>('[data-jour]') : null
@@ -49,26 +41,61 @@ export default function BulleCalendrier({ children }: { children: ReactNode }) {
     })
   }
 
+  /*
+   * Any scroll (the page, or the calendar sideways) moves the day away from the
+   * bubble. Under the mouse, the bubble closes; from the keyboard it follows the
+   * day, since focusing a day can itself scroll the page to show it.
+   */
+  useEffect(() => {
+    if (!bulle) return
+    const suivre = () => (auClavier.current ? montrer(auClavier.current) : setBulle(null))
+    const fermer = () => setBulle(null)
+    window.addEventListener('scroll', suivre, { capture: true, passive: true })
+    window.addEventListener('widgets', fermer)
+    return () => {
+      window.removeEventListener('scroll', suivre, { capture: true })
+      window.removeEventListener('widgets', fermer)
+    }
+  })
+
   return (
     <div
       ref={zone}
       className={styles.zoneBulle}
-      onPointerOver={(e: PointerEvent) => montrer(e.target)}
+      onPointerOver={(e: PointerEvent) => {
+        auClavier.current = null
+        montrer(e.target)
+      }}
       onPointerLeave={() => setBulle(null)}
-      onFocus={(e: FocusEvent) => montrer(e.target)}
-      onBlur={() => setBulle(null)}
+      onFocus={(e: FocusEvent) => {
+        auClavier.current = e.target
+        montrer(e.target)
+      }}
+      onBlur={() => {
+        auClavier.current = null
+        setBulle(null)
+      }}
     >
       {children}
-      {bulle && (
-        <div
-          className={styles.bulle}
-          style={{ left: bulle.x, top: bulle.y, '--fleche': `${bulle.fleche}px` } as CSSProperties}
-          aria-hidden="true"
-        >
-          <strong>{bulle.nombre}</strong>
-          <span>{bulle.jour}</span>
-        </div>
-      )}
+      {bulle && <Bulle {...bulle} />}
+    </div>
+  )
+}
+
+/** The bubble itself, in liquid glass over the calendar's squares (no rim lens: small and animated) */
+function Bulle({ nombre, jour, x, y, fleche }: Bulle) {
+  const ref = useRef<HTMLDivElement>(null)
+  useVerre(ref, { densiteMin: 1 })
+  return (
+    <div
+      ref={ref}
+      className={styles.bulle}
+      style={{ left: x, top: y, '--fleche': `${fleche}px` } as CSSProperties}
+      aria-hidden="true"
+      data-verre=""
+    >
+      <strong>{nombre}</strong>
+      <span>{jour}</span>
     </div>
   )
 }

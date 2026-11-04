@@ -7,7 +7,7 @@
   width: fit-content;
 }
 
-/* Same floating pill as before, now an opaque surface with a hairline instead of glass */
+/* The floating pill in liquid glass (tokens in globals.css): the page scrolls under it */
 .nav {
   display: flex;
   gap: 24px;
@@ -15,8 +15,25 @@
   border-radius: 32px;
   padding: 12px 24px;
   position: relative;
-  background: var(--surface-raised);
-  border: 1px solid var(--line);
+  isolation: isolate;
+  border: 1px solid transparent;
+  background: var(--verre-fond);
+  -webkit-backdrop-filter: var(--verre-filtre);
+  backdrop-filter: var(--verre-filtre);
+  box-shadow: var(--verre-bord);
+  color: var(--verre-encre);
+}
+
+/* The glass's inner light: a highlight from the top left and soft glows inside the rim */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--verre-reflet);
+  box-shadow: var(--verre-lueur);
+  pointer-events: none;
 }
 
 .menu {

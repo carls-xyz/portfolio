@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Ile from "@/components/layout/Ile";
+import ReglagesVerre from "@/components/layout/ReglagesVerre";
 import { SCRIPT_THEME } from "@/components/layout/scriptTheme";
 
 export const metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Header />
         <Ile />
+        <ReglagesVerre />
         <div id="contenu">{children}</div>
         <Footer />
       </body>

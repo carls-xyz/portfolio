@@ -22,8 +22,9 @@
 .echap {
   padding: 1px 6px;
   border-radius: 6px;
-  border: 1px solid var(--line);
-  background: var(--page);
+  border: 1px solid rgba(var(--ink), 0.14);
+  /* A tint of the ink rather than the page colour, so the keycaps follow the glass they sit on */
+  background: rgba(var(--ink), 0.08);
   color: rgba(var(--ink), 0.7);
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
   font-size: 11px;
@@ -37,15 +38,44 @@
   max-height: min(480px, calc(100vh - 160px));
   margin: 120px auto auto;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 16px;
-  background: var(--surface-raised);
-  color: rgb(var(--ink));
+  isolation: isolate;
+  /* A list of text over the page: a stronger blur than the material's 2 px keeps what is behind from reading through */
+  --verre-flou: 18px;
+  background: var(--verre-fond);
+  -webkit-backdrop-filter: var(--verre-filtre);
+  backdrop-filter: var(--verre-filtre);
+  box-shadow: var(--verre-bord);
+  color: var(--verre-encre);
   overflow: hidden;
 }
 
+/* The glass's inner light */
+.dialogue::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--verre-reflet);
+  box-shadow: var(--verre-lueur);
+  pointer-events: none;
+}
+
+/* A light veil only: a heavy one would leave the glass nothing to show but grey */
 .dialogue::backdrop {
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* On light glass, the highlighted row is a lighter layer of the glass, not a grey wash */
+:global(:root[data-theme='light']) .dialogue:not([data-encre='claire']) .option:hover {
+  background: rgb(255 255 255 / 0.42);
+}
+
+:global(:root[data-theme='light']) .dialogue:not([data-encre='claire']) .option[aria-selected='true'] {
+  background: rgb(255 255 255 / 0.76);
+  box-shadow: inset 0 0 0 0.5px rgb(255 255 255);
 }
 
 .panneau {

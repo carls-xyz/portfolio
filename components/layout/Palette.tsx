@@ -2,10 +2,11 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type KeyboardEvent } from 'react'
-import { ArrowUpRight, Bug, CornerDownLeft, FolderOpen, House, Search } from 'lucide-react'
+import { ArrowUpRight, Bug, CornerDownLeft, FolderOpen, House, Search, SlidersHorizontal } from 'lucide-react'
 import { envoyerOrdre, type Ordre } from '@/components/accueil/bestioleOrdres'
 import { annoncer } from './annonces'
 import { projets } from '@/data/projets'
+import { useVerre } from './verre'
 import styles from './Palette.module.css'
 
 /*
@@ -18,7 +19,7 @@ import styles from './Palette.module.css'
 
 type Commande = {
   id: string
-  groupe: 'Pages' | 'Projets' | 'Liens' | 'Bestiole'
+  groupe: 'Pages' | 'Projets' | 'Liens' | 'Bestiole' | 'Réglages'
   label: string
   detail?: string
   /** Extra words that match without being shown, e.g. a project's stack */
@@ -28,6 +29,8 @@ type Commande = {
   /** Hidden commands: an order for the creature, shown only for these exact words */
   ordre?: Ordre
   secrets?: string[]
+  /** Opens a panel instead of a page, via a window event */
+  evenement?: string
 }
 
 const COMMANDES: Commande[] = [
@@ -51,6 +54,15 @@ const COMMANDES: Commande[] = [
     href: 'https://github.com/carls-xyz/portfolio',
     externe: true,
   },
+  {
+    id: 'verre',
+    groupe: 'Réglages',
+    label: 'Réglages du verre',
+    detail: 'Teinte en clair et en sombre',
+    motsCles: 'verre transparence glass teinte flou',
+    href: '/',
+    evenement: 'reglages-verre',
+  },
   { id: 'cafe', groupe: 'Bestiole', label: 'Offrir un café à la bestiole', href: '/', ordre: 'cafe', secrets: ['cafe', 'coffee'] },
   { id: 'dodo', groupe: 'Bestiole', label: 'Envoyer la bestiole au lit', href: '/', ordre: 'dodo', secrets: ['dodo', 'dors', 'sleep'] },
   { id: 'saut', groupe: 'Bestiole', label: 'Faire sauter la bestiole', href: '/', ordre: 'saut', secrets: ['saute', 'saut', 'jump'] },
@@ -63,7 +75,7 @@ const ANNONCES: Record<Ordre, string> = {
   saut: 'Hop',
 }
 
-const ICONES = { Pages: House, Projets: FolderOpen, Liens: ArrowUpRight, Bestiole: Bug }
+const ICONES = { Pages: House, Projets: FolderOpen, Liens: ArrowUpRight, Bestiole: Bug, Réglages: SlidersHorizontal }
 
 /** Lowercase, without accents: "Pékin" matches "pekin" */
 const normaliser = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
@@ -76,6 +88,8 @@ export default function Palette() {
   const router = useRouter()
   const chemin = usePathname()
   const dialogue = useRef<HTMLDialogElement>(null)
+  // Liquid glass, without the rim lens (an animated top-layer panel), dense: it is full of text
+  useVerre(dialogue, { memoire: 'palette', densiteMin: 1 })
   const champ = useRef<HTMLInputElement>(null)
   const [requete, setRequete] = useState('')
   const [actif, setActif] = useState(0)
@@ -120,7 +134,8 @@ export default function Palette() {
   const lancer = (c: Commande | undefined) => {
     if (!c) return
     fermer()
-    if (c.ordre) {
+    if (c.evenement) window.dispatchEvent(new Event(c.evenement))
+    else if (c.ordre) {
       // The order waits for the creature if we are not on the home page yet
       envoyerOrdre(c.ordre)
       annoncer(ANNONCES[c.ordre])
@@ -157,6 +172,7 @@ export default function Palette() {
       <dialog
         ref={dialogue}
         className={styles.dialogue}
+        data-verre=""
         aria-label="Palette de commandes"
         // A click on the backdrop (outside the panel) closes it
         onClick={e => e.target === e.currentTarget && fermer()}

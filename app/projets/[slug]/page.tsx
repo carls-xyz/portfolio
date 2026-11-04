@@ -27,6 +27,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: projet.title,
     description: projet.tagline,
+    // The tab only says "carls-xyz"; a shared link names the project
+    // (openGraph replaces the layout's whole object, hence siteName and locale again)
+    openGraph: { title: `${projet.title} · carls-xyz`, description: projet.tagline, siteName: "carls-xyz", locale: "fr_FR", type: "article" },
   }
 }
 

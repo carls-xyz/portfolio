@@ -13,6 +13,14 @@ export const metadata = {
     template: "carls-xyz",
   },
   description: "Portfolio de développeur web",
+  // Absolute URLs for the share images (app/opengraph-image.tsx and per project)
+  metadataBase: new URL("https://carls-xyz.vercel.app"),
+  openGraph: {
+    siteName: "carls-xyz",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

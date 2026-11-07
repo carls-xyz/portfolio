@@ -13,9 +13,14 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 function valider(data: Record<Champ, string>): Erreurs {
   const erreurs: Erreurs = {}
   if (!data.name.trim()) erreurs.name = 'Indiquez votre nom'
+  else if (data.name.trim().length < 2) erreurs.name = 'Le nom doit contenir au moins 2 caractères'
+  else if (data.name.trim().length > 80) erreurs.name = 'Le nom ne peut pas dépasser 80 caractères'
   if (!data.email.trim()) erreurs.email = 'Indiquez votre adresse email'
   else if (!EMAIL.test(data.email.trim())) erreurs.email = 'Adresse invalide, par exemple nom@domaine.fr'
+  else if (data.email.trim().length > 254) erreurs.email = 'L’adresse email est trop longue'
   if (!data.message.trim()) erreurs.message = 'Écrivez votre message'
+  else if (data.message.trim().length < 10) erreurs.message = 'Le message doit contenir au moins 10 caractères'
+  else if (data.message.trim().length > 5_000) erreurs.message = 'Le message ne peut pas dépasser 5 000 caractères'
   return erreurs
 }
 
@@ -37,6 +42,8 @@ export default function ContactForm() {
       message: String(formData.get('message') ?? ''),
     }
 
+    const website = String(formData.get('website') ?? '')
+
     // Each error is shown under its field, and focus goes to the first one
     const trouvees = valider(data)
     setErreurs(trouvees)
@@ -51,7 +58,7 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ ...data, website })
       })
 
       const result = await res.json()
@@ -95,6 +102,11 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
       noValidate
     >
+      <div className={styles.honeypot} aria-hidden="true">
+        <label htmlFor="website">Site web</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.label}>
           Nom
@@ -103,6 +115,7 @@ export default function ContactForm() {
           type="text"
           placeholder="Entrez votre nom"
           autoComplete="name"
+          maxLength={80}
           className={styles.input}
           {...champ('name')}
         />
@@ -117,6 +130,7 @@ export default function ContactForm() {
           type="email"
           placeholder="votre@email.com"
           autoComplete="email"
+          maxLength={254}
           className={styles.input}
           {...champ('email')}
         />
@@ -130,6 +144,7 @@ export default function ContactForm() {
         <textarea
           placeholder="Votre message..."
           rows={6}
+          maxLength={5000}
           className={styles.textarea}
           {...champ('message')}
         />

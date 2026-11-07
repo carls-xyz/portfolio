@@ -10,6 +10,17 @@
   position: relative;
 }
 
+/* Champ leurre anti-robot : hors écran, sans display:none pour rester visible
+   aux remplisseurs automatiques simples, mais jamais aux visiteurs. */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;

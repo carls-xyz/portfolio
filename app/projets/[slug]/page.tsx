@@ -44,7 +44,7 @@ export default async function ProjetPage({ params }: Props) {
   return (
     // Same name as the project's card on /projets: the card grows into this panel
     <ViewTransition name={`carte-${projet.slug}`} share="carte">
-      <main className={styles.container}>
+      <div className={styles.container}>
         <Link href="/projets" className={styles.back}>
           ← Retour aux projets
         </Link>
@@ -97,7 +97,7 @@ export default async function ProjetPage({ params }: Props) {
             Voir le code sur GitHub ↗
           </a>
         )}
-      </main>
+      </div>
     </ViewTransition>
   )
 }

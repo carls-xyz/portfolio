@@ -29,7 +29,6 @@ export default function Image() {
           {/* The four creatures a visitor can pick, the first one in front */}
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
             {BESTIOLES.map((b, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
               <img key={b.id} src={bestioleSvg(b.id)} width={i === 0 ? 144 : 72} height={i === 0 ? 120 : 60} alt="" />
             ))}
           </div>

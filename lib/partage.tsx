@@ -10,6 +10,9 @@ import { BESTIOLES } from '@/components/accueil/bestioles'
 /** The feet, as in BestioleSprite.tsx (not imported: it pulls in a CSS module) */
 const PATTES_A = '..OO....OO..'
 
+/** The site's public address, for absolute URLs (share images, sitemap, robots) */
+export const URL_SITE = 'https://carls-xyz.vercel.app'
+
 export const TAILLE = { width: 1200, height: 630 }
 export const TYPE = 'image/png'
 

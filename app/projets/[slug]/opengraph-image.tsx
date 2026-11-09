@@ -60,7 +60,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             overflow: 'hidden',
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={cover} width={520} height={295} alt="" style={{ objectFit: 'cover' }} />
         </div>
       </div>

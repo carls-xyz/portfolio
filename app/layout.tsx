@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Ile from "@/components/layout/Ile";
 import ReglagesVerre from "@/components/layout/ReglagesVerre";
+import { URL_SITE } from "@/lib/partage";
 import { SCRIPT_THEME } from "@/components/layout/scriptTheme";
 
 export const metadata = {
@@ -14,7 +15,7 @@ export const metadata = {
   },
   description: "Portfolio de développeur web",
   // Absolute URLs for the share images (app/opengraph-image.tsx and per project)
-  metadataBase: new URL("https://carls-xyz.vercel.app"),
+  metadataBase: new URL(URL_SITE),
   openGraph: {
     siteName: "carls-xyz",
     locale: "fr_FR",
@@ -37,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <Ile />
         <ReglagesVerre />
-        <div id="contenu">{children}</div>
+        <main id="contenu">{children}</main>
         <Footer />
       </body>
     </html>

@@ -12,6 +12,15 @@
 
 /* The whole scene is the button: click (or Enter) and it jumps */
 .scene {
+  --atelier-mur: #242b30;
+  --atelier-ombre: #171d22;
+  --atelier-joint: #30383b;
+  --atelier-soubassement: #20272a;
+  --atelier-bois: #695446;
+  --atelier-bois-clair: #a08769;
+  --atelier-sol: #433b36;
+  --atelier-joint-sol: #332e2c;
+  --atelier-tapis: #34444c;
   display: block;
   padding: 0;
   border: 0;
@@ -19,6 +28,18 @@
   background: var(--bestiole-mur, #121215);
   cursor: pointer;
   overflow: hidden;
+}
+
+:global([data-theme='light']) .scene {
+  --atelier-mur: #dfd9cc;
+  --atelier-ombre: #8c8d83;
+  --atelier-joint: #c6c4b7;
+  --atelier-soubassement: #bdc7bd;
+  --atelier-bois: #947b60;
+  --atelier-bois-clair: #bfa17b;
+  --atelier-sol: #b09a80;
+  --atelier-joint-sol: #96816c;
+  --atelier-tapis: #718b93;
 }
 
 .scene:focus-visible {
@@ -97,12 +118,24 @@
   }
 }
 
-/* Code lines scroll up the laptop screen */
-@keyframes defile {
+/* The 2px ball travels inside an 8 × 7 screen. Horizontal impacts happen
+   at multiples of 3s; vertical ones at 1.25 + multiples of 2.5s. They never
+   coincide, so the ball always misses the exact corner. */
+@keyframes bouleX {
+  from { transform: translateX(0); }
   to {
-    transform: translateY(-6px);
+    transform: translateX(6px);
   }
 }
+
+@keyframes bouleY {
+  from { transform: translateY(0); }
+  to { transform: translateY(5px); }
+}
+
+/* A centred, stationary screensaver when reduced motion is requested. */
+.bouleX { transform: translateX(3px); }
+.bouleY { transform: translateY(2.5px); }
 
 /* A sip: leans in towards the mug, then back */
 @keyframes gorgee {
@@ -178,12 +211,12 @@
     animation: respire 2.4s steps(2, end) infinite;
   }
 
-  .codeRapide {
-    animation: defile 1.2s steps(3, end) infinite;
+  .bouleX {
+    animation: bouleX 3s linear infinite alternate;
   }
 
-  .codeLent {
-    animation: defile 4s steps(3, end) infinite;
+  .bouleY {
+    animation: bouleY 2.5s -1.25s linear infinite alternate;
   }
 
   .vapeur {

@@ -12,7 +12,7 @@ import type { Ecoute } from '@/app/api/ecoute/route'
 import styles from './Bestiole.module.css'
 
 /*
- * A little pixel creature at work. It goes from its laptop (code scrolls while
+ * A little pixel creature at work. It goes from its monitor (a ball bounces while
  * it types) to the coffee corner and back, strolls, looks around and hops,
  * always busy with something; at night in Paris it falls asleep at its desk.
  * Its window shows the real weather in Paris, it looks up and shows a project
@@ -323,8 +323,50 @@ export default function Bestiole() {
             </clipPath>
           </defs>
 
+          {/* A tiny lived-in studio, drawn on the same pixel grid as its occupant. */}
+          <R x={0} y={0} w={64} h={48} c="var(--atelier-mur)" />
+          <R x={0} y={0} w={3} h={40} c="var(--atelier-ombre)" />
+          <R x={61} y={0} w={3} h={40} c="var(--atelier-ombre)" />
+          <R x={3} y={2} w={58} h={1} c="var(--atelier-joint)" />
+          <R x={3} y={23} w={58} h={1} c="var(--atelier-joint)" />
+          <R x={3} y={24} w={58} h={16} c="var(--atelier-soubassement)" />
+          {[8, 19, 30, 41, 52].map(px => (
+            <R key={px} x={px} y={25} h={14} c="var(--atelier-joint)" />
+          ))}
+
+          {/* Books, a small radio and its copper aerial on a floating shelf. */}
+          <R x={5} y={14} w={15} h={2} c="var(--atelier-bois)" />
+          <R x={6} y={16} w={1} h={2} c="var(--atelier-ombre)" />
+          <R x={18} y={16} w={1} h={2} c="var(--atelier-ombre)" />
+          <R x={6} y={8} w={2} h={6} c="#9b7765" />
+          <R x={8} y={9} w={2} h={5} c="#728d83" />
+          <R x={10} y={7} w={2} h={7} c={ACCENT} />
+          <R x={6} y={10} w={1} c="#dcc7a2" />
+          <R x={10} y={9} w={1} c={ACCENT_CLAIR} />
+          <R x={14} y={10} w={5} h={4} c="var(--atelier-ombre)" />
+          <R x={15} y={11} w={2} h={2} c="#596369" />
+          <R x={18} y={11} c={musique ? ACCENT_CLAIR : '#9b7765'} />
+          <R x={17} y={7} h={3} c="#9b7765" />
+
+          {/* A framed orbital print echoes the globe beside the room. */}
+          <R x={46} y={5} w={12} h={14} c="var(--atelier-bois)" />
+          <R x={47} y={6} w={10} h={12} c="#182631" />
+          <R x={50} y={9} w={4} h={4} c={ACCENT} />
+          <R x={49} y={10} w={1} h={2} c={ACCENT} />
+          <R x={54} y={10} w={1} h={2} c={ACCENT} />
+          <R x={48} y={12} w={3} c={ACCENT_CLAIR} />
+          <R x={53} y={10} w={3} c={ACCENT_CLAIR} />
+          <R x={49} y={7} c="#d5c5a6" />
+          <R x={51} y={15} w={3} c="#778790" />
+
+          {/* Solid stepped light shapes keep the scenery crisp, even at night. */}
+          <g opacity={ciel === 'nuit' ? 0.06 : 0.13}>
+            <path d="M25 15H39L46 39H20Z" fill={ACCENT_CLAIR} />
+          </g>
+
           {/* Window onto Paris: sun or moon, then the weather on top */}
-          <R x={24} y={4} w={16} h={11} c="#2a2a30" />
+          <R x={23} y={3} w={18} h={13} c="var(--atelier-ombre)" />
+          <R x={24} y={4} w={16} h={11} c="var(--atelier-bois)" />
           <g clipPath="url(#bestiole-fenetre)">
             <R x={25} y={5} w={14} h={9} c={fond} />
             {!couvert &&
@@ -371,12 +413,38 @@ export default function Bestiole() {
                 <R x={30} y={11} w={1} h={2} c="#f2d58a" />
               </g>
             )}
+            {/* Rooftops and a single lit window, below the moving weather. */}
+            <R x={25} y={12} w={5} h={2} c="#23303e" />
+            <R x={26} y={11} w={3} c="#23303e" />
+            <R x={34} y={11} w={5} h={3} c="#23303e" />
+            <R x={36} y={10} w={2} c="#23303e" />
+            <R x={35} y={12} c={ciel === 'nuit' ? '#e1b77b' : '#82949d'} />
           </g>
-          <R x={31} y={5} w={1} h={9} c="#2a2a30" />
+          <R x={31} y={5} w={1} h={9} c="var(--atelier-bois)" />
+          <R x={23} y={15} w={18} h={1} c="var(--atelier-bois-clair)" />
+          <R x={24} y={16} w={16} h={1} c="var(--atelier-ombre)" />
 
-          {/* Floor */}
-          <R x={0} y={46} w={64} h={1} c="#2a2a30" />
-          <R x={0} y={47} w={64} h={1} c="#38383f" />
+          {/* Plinth, staggered wooden boards and a low woven rug. */}
+          <R x={0} y={39} w={64} h={2} c="var(--atelier-bois)" />
+          <R x={0} y={41} w={64} h={7} c="var(--atelier-sol)" />
+          <R x={0} y={44} w={64} c="var(--atelier-joint-sol)" />
+          <R x={0} y={47} w={64} c="var(--atelier-joint-sol)" />
+          {[8, 26, 45, 60].map(px => <R key={px} x={px} y={41} h={3} c="var(--atelier-joint-sol)" />)}
+          {[17, 37, 54].map(px => <R key={px} x={px} y={45} h={2} c="var(--atelier-joint-sol)" />)}
+          <R x={16} y={43} w={25} h={4} c="var(--atelier-ombre)" />
+          <R x={17} y={43} w={23} h={3} c="var(--atelier-tapis)" />
+          <R x={19} y={44} w={19} c={ACCENT} />
+          <R x={20} y={44} w={17} c="var(--atelier-tapis)" />
+
+          {/* A warm desk lamp; its light softens when the creature sleeps. */}
+          <g opacity={dort ? 0.35 : 1}>
+            <path d="M42 23H46L50 35H38Z" fill="#e9ba78" opacity={clair ? 0.08 : 0.12} />
+            <R x={42} y={34} w={4} h={1} c="var(--atelier-bois-clair)" />
+            <R x={43} y={24} h={10} c="var(--atelier-bois-clair)" />
+            <R x={42} y={21} w={3} h={1} c="#ac9475" />
+            <R x={41} y={22} w={5} h={2} c="#c4a47c" />
+            <R x={42} y={24} w={3} c="#f1d39b" />
+          </g>
 
           {/* Plant in its pot */}
           <g className={styles.plante}>
@@ -387,7 +455,7 @@ export default function Bestiole() {
           <R x={1} y={42} w={3} h={4} c="#8a6a55" />
 
           {/* Coffee corner: small table, mug, steam */}
-          <R x={5} y={38} w={9} h={1} c="#4a4a52" />
+          <R x={5} y={38} w={9} h={1} c="var(--atelier-bois-clair)" />
           <R x={6} y={39} w={1} h={7} c="#38383f" />
           <R x={12} y={39} w={1} h={7} c="#38383f" />
           {/* White mug on the dark wall, blue on the pale one */}
@@ -399,29 +467,40 @@ export default function Bestiole() {
             <R x={9} y={31} c="#9aa1ab" />
           </g>
 
-          {/* Desk and laptop; the screen scrolls code, faster while it types */}
-          <R x={42} y={36} w={21} h={2} c="#4a4a52" />
+          {/* Desk and ivory CRT monitor with a bouncing screensaver and project glyphs. */}
+          <R x={42} y={36} w={21} h={1} c="var(--atelier-bois-clair)" />
+          <R x={42} y={37} w={21} h={1} c="var(--atelier-bois)" />
+          <path d="M55 38V40H57V44H59" fill="none" stroke="var(--atelier-ombre)" strokeWidth="1" />
           <R x={43} y={38} w={2} h={8} c="#38383f" />
           <R x={60} y={38} w={2} h={8} c="#38383f" />
-          <R x={44} y={35} w={13} h={1} c="#9aa1ab" />
-          <R x={46} y={26} w={10} h={9} c="#9aa1ab" />
+          {/* Stepped casing, shaded right edge, chin and a short pedestal. */}
+          <R x={46} y={22} w={10} c="#e2d8bf" />
+          <R x={45} y={23} w={12} h={9} c="#c5bba4" />
+          <R x={45} y={23} w={1} h={8} c="#e2d8bf" />
+          <R x={56} y={24} w={1} h={8} c="#8c8576" />
+          <R x={46} y={23} w={10} h={9} c="#6a716c" />
+          <R x={46} y={31} w={10} h={2} c="#b7ad96" />
+          <R x={47} y={32} w={3} c="#8c8576" />
+          <R x={54} y={32} c={dort && !glyphe ? '#786c58' : '#b9dca0'} />
+          <R x={50} y={33} w={3} h={2} c="#8c8576" />
+          <R x={48} y={35} w={7} c="#c5bba4" />
+          {/* Offset the existing 8 × 7 display as a unit, including its clipping region. */}
+          <g transform="translate(0 -3)">
           <R x={47} y={27} w={8} h={7} c={dort && !glyphe ? '#0b0f14' : '#15222d'} />
           {glyphe ? (
             glyphe.map((ligne, i) => <Ligne key={i} ligne={ligne} x={47} y={27 + i} />)
           ) : (
             !dort && (
               <g clipPath="url(#bestiole-ecran)">
-                <g className={code ? styles.codeRapide : styles.codeLent}>
-                  <R x={48} y={28} w={5} c={ACCENT} />
-                  <R x={49} y={30} w={4} c={ACCENT_CLAIR} />
-                  <R x={49} y={32} w={5} c={ACCENT} />
-                  <R x={48} y={34} w={3} c={ACCENT_CLAIR} />
-                  <R x={49} y={36} w={4} c={ACCENT} />
-                  <R x={48} y={38} w={5} c={ACCENT_CLAIR} />
+                <g className={styles.bouleX}>
+                  <g className={styles.bouleY}>
+                    <circle cx={48} cy={28} r={1} fill={ACCENT_CLAIR} shapeRendering="geometricPrecision" />
+                  </g>
                 </g>
               </g>
             )
           )}
+          </g>
           {/* Pencil pot */}
           <R x={58} y={32} w={2} h={4} c={ACCENT} />
           <R x={58} y={30} w={1} h={2} c="#f2d58a" />

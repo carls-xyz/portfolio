@@ -10,10 +10,11 @@ import styles from './Dossiers.module.css'
 
 /*
  * The projects page as three glass folders, one per context. Each folder shows
- * its projects' covers peeking out; on hover they fan. Nothing is listed until
- * a folder is clicked: it opens (the covers lift out) and its projects appear
- * below; a second click closes it. The open folder is kept in the URL
- * (?dossier=equipe), so coming back from a project reopens it.
+ * its projects' covers peeking out; on hover they fan. A click opens a folder
+ * (the covers lift out) and lists its projects below; a second click closes it.
+ * The first folder is open on arrival, so the page never starts empty. The
+ * choice is kept in the URL (?dossier=equipe, or ?dossier=aucun when all are
+ * closed), so coming back from a project restores it.
  */
 
 /* All three in the site's accent, i.e. the colour of the creature the visitor picked */
@@ -23,7 +24,10 @@ const DOSSIERS: { contexte: Contexte; cle: string; titre: string; section: strin
   { contexte: "Projet d'équipe", cle: 'equipe', titre: 'Équipe', section: "Projets d'équipe" },
 ]
 
-/* The open folder, read from the URL; none on the server */
+/* In the URL when the visitor closed every folder */
+const AUCUN = 'aucun'
+
+/* The open folder, read from the URL; without one (and on the server), the first folder */
 function abonner(rappel: () => void) {
   window.addEventListener('popstate', rappel)
   window.addEventListener('dossier', rappel)
@@ -32,13 +36,12 @@ function abonner(rappel: () => void) {
     window.removeEventListener('dossier', rappel)
   }
 }
-const lireDossier = () => new URLSearchParams(window.location.search).get('dossier')
-const surServeur = () => null
+const lireDossier = () => new URLSearchParams(window.location.search).get('dossier') ?? DOSSIERS[0].cle
+const surServeur = () => DOSSIERS[0].cle
 
 function choisir(cle: string | null) {
   const url = new URL(window.location.href)
-  if (cle) url.searchParams.set('dossier', cle)
-  else url.searchParams.delete('dossier')
+  url.searchParams.set('dossier', cle ?? AUCUN)
   window.history.replaceState(null, '', url)
   window.dispatchEvent(new Event('dossier'))
   // On phones the folders are stacked and the projects open below them: bring the list into view

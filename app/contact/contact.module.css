@@ -30,6 +30,26 @@
   line-height: 1.6;
 }
 
+.ailleurs {
+  margin-top: 24px;
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 14px;
+  text-align: center;
+}
+
+.ailleurs a {
+  /* 24px tall to tap */
+  display: inline-block;
+  padding-block: 4px;
+  color: rgba(var(--bleu-texte), var(--a-lien));
+  text-underline-offset: 3px;
+  transition: color 150ms ease-out;
+}
+
+.ailleurs a:hover {
+  color: rgb(var(--ink));
+}
+
 @keyframes entree {
   from {
     opacity: 0;

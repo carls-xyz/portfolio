@@ -33,7 +33,10 @@ export default function Home() {
             <li key={projet.slug}>
               <Link href={`/projets/${projet.slug}`} className={styles.tuile} data-projet={projet.slug}>
                 <Cover slug={projet.slug} className={styles.tuileCover} />
-                <span className={styles.tuileTitre}>{projet.title}</span>
+                <span className={styles.tuileTexte}>
+                  <span className={styles.tuileTitre}>{projet.title}</span>
+                  <span className={styles.tuileAccroche}>{projet.tagline}</span>
+                </span>
               </Link>
             </li>
           ))}
@@ -53,7 +56,7 @@ export default function Home() {
 
       <div className={styles.actions}>
         <Link href="/projets" className={styles.lienMetal}>
-          Voir les {projets.length} projets →
+          Parcourir par dossier →
         </Link>
       </div>
     </div>

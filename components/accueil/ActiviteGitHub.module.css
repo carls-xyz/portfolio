@@ -67,6 +67,19 @@
   direction: ltr;
 }
 
+/* A short calendar (a young account): larger squares, so it still fills its card */
+.calendrier[data-court] {
+  --case: 15px;
+  --ecart: 3px;
+}
+
+@media (max-width: 600px) {
+  .calendrier[data-court] {
+    --case: 11px;
+    --ecart: 2px;
+  }
+}
+
 .mois,
 .jours {
   display: grid;
@@ -76,7 +89,7 @@
 
 .mois {
   color: rgba(var(--ink), var(--a-moyen));
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
 }
 
@@ -137,6 +150,10 @@
 }
 
 .lien {
+  /* 24px tall to tap; the negative margin keeps the layout where it was */
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
   color: rgba(var(--bleu-texte), var(--a-lien));
   font-size: 13px;
   text-underline-offset: 3px;

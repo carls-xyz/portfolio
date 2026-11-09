@@ -1,4 +1,5 @@
 import ContactForm from '@/components/contact/ContactForm'
+import { UTILISATEUR_GITHUB } from '@/lib/github'
 import styles from './contact.module.css'
 
 export const metadata = {
@@ -12,9 +13,16 @@ export default function ContactPage() {
       <div className={styles.content}>
         <h1 className={styles.title}>Contactez-moi</h1>
         <p className={styles.description}>
-          Une question sur un projet ou une proposition : le message arrive directement dans ma boîte mail.
+          Une question sur un projet ou une proposition&nbsp;: le message arrive directement dans ma boîte mail.
         </p>
         <ContactForm />
+        {/* For those who would rather not fill in a form */}
+        <p className={styles.ailleurs}>
+          Ou sur{' '}
+          <a href={`https://github.com/${UTILISATEUR_GITHUB}`} target="_blank" rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        </p>
       </div>
     </div>
   )

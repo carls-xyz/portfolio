@@ -97,6 +97,13 @@
     color 150ms ease-out;
 }
 
+/* The grip looks small but takes a finger: its hit area reaches 6px past every edge */
+.poignee::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+}
+
 .widget:hover .poignee,
 .poignee:focus-visible,
 .widget[data-tire] .poignee {

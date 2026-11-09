@@ -190,7 +190,7 @@
   .dossiers {
     grid-template-columns: minmax(0, 340px);
     gap: 44px;
-    padding-top: 48px;
+    padding-top: 8px;
   }
 
   .dossier {

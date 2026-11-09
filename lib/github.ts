@@ -14,11 +14,15 @@ export type Activite = {
   jours: Jour[]
   /** The repository pushed to most recently, and when */
   derniere: { depot: string; date: string } | null
+  /** The day the account was created (YYYY-MM-DD) when it is younger than the calendar, else null */
+  depuis: string | null
 }
 
 const CACHE = 900 // seconds
 
-async function parGraphQL(token: string): Promise<Omit<Activite, 'derniere'> | null> {
+type Calendrier = Pick<Activite, 'total' | 'jours'>
+
+async function parGraphQL(token: string): Promise<Calendrier | null> {
   const requete = `query($login: String!) {
     user(login: $login) {
       contributionsCollection {
@@ -54,7 +58,7 @@ async function parGraphQL(token: string): Promise<Omit<Activite, 'derniere'> | n
 }
 
 /** The calendar GitHub renders on the public profile: one cell per day, with its level and a tooltip giving the count */
-async function parPagePublique(): Promise<Omit<Activite, 'derniere'> | null> {
+async function parPagePublique(): Promise<Calendrier | null> {
   const res = await fetch(`https://github.com/users/${UTILISATEUR_GITHUB}/contributions`, {
     next: { revalidate: CACHE },
   })
@@ -91,14 +95,37 @@ async function derniereActivite(): Promise<Activite['derniere']> {
   return dernier ? { depot: dernier.name, date: dernier.pushed_at } : null
 }
 
+/** The day the account was created, as YYYY-MM-DD */
+async function creationDuCompte(): Promise<string | null> {
+  const res = await fetch(`https://api.github.com/users/${UTILISATEUR_GITHUB}`, {
+    headers: { Accept: 'application/vnd.github+json' },
+    // An account's creation date never changes
+    next: { revalidate: 86_400 },
+  })
+  if (!res.ok) return null
+  const { created_at }: { created_at?: string } = await res.json()
+  return created_at?.slice(0, 10) ?? null
+}
+
 export async function lireActivite(): Promise<Activite | null> {
   try {
     const token = process.env.GITHUB_TOKEN
-    const [calendrier, derniere] = await Promise.all([
+    const [calendrier, derniere, creation] = await Promise.all([
       (token ? parGraphQL(token).catch(() => null) : Promise.resolve(null)).then(c => c ?? parPagePublique()),
       derniereActivite().catch(() => null),
+      creationDuCompte().catch(() => null),
     ])
-    return calendrier ? { ...calendrier, derniere } : null
+    if (!calendrier) return null
+
+    /*
+     * An account younger than a year: the calendar starts the day it was
+     * created, rather than showing months of squares that could only be empty.
+     */
+    if (creation && creation > calendrier.jours[0].date) {
+      const jours = calendrier.jours.filter(j => j.date >= creation)
+      if (jours.length) return { total: jours.reduce((s, j) => s + j.n, 0), jours, derniere, depuis: creation }
+    }
+    return { ...calendrier, derniere, depuis: null }
   } catch {
     return null
   }

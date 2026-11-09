@@ -114,6 +114,18 @@
   color: rgb(var(--ink));
 }
 
+/* The title and, under it, what the project is in a few words */
+.tuileTexte {
+  display: grid;
+  gap: 2px;
+}
+
+.tuileAccroche {
+  color: rgba(var(--ink), var(--a-moyen));
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 /*
  * Up to small tablets the strip becomes one swipeable row of full-size tiles:
  * four columns would squeeze them to about 100 px there

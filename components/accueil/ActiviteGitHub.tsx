@@ -5,8 +5,9 @@ import BulleCalendrier from './BulleCalendrier'
 import styles from './ActiviteGitHub.module.css'
 
 /*
- * The last twelve months of GitHub contributions, as GitHub draws them: one
- * square per day, a column per week, darker blue for busier days. Rendered on
+ * The last twelve months of GitHub contributions (or fewer, from the day the
+ * account was created), as GitHub draws them: one square per day, a column
+ * per week, darker blue for busier days. Rendered on
  * the server and refreshed hourly (lib/github.ts); nothing shows if GitHub
  * cannot be read.
  */
@@ -20,7 +21,7 @@ const date = (j: Jour) => jourFr(j.date, { weekday: 'long', day: 'numeric', mont
 export default async function ActiviteGitHub() {
   const activite = await lireActivite()
   if (!activite) return null
-  const { total, jours, derniere } = activite
+  const { total, jours, derniere, depuis } = activite
 
   // Weeks start on Sunday, as on GitHub: the first column may start part-way down
   const decalage = new Date(`${jours[0].date}T00:00:00Z`).getUTCDay()
@@ -32,8 +33,6 @@ export default async function ActiviteGitHub() {
     .filter(({ j, colonne }) => j.date.endsWith('-01') && colonne <= colonnes - 3)
     .map(({ j, colonne }) => ({ colonne, nom: jourFr(j.date, { month: 'short' }) }))
 
-  const actifs = jours.filter(j => j.n > 0).length
-
   return (
     <section className={styles.carte} aria-labelledby="activite-github">
       <BestioleRonde />
@@ -43,11 +42,8 @@ export default async function ActiviteGitHub() {
             Activité GitHub
           </h2>
           <p className={styles.total}>
-            {total} contribution{total > 1 ? 's' : ''} sur les 12 derniers mois
-            <span className={styles.discret}>
-              {' '}
-              · {actifs} jour{actifs > 1 ? 's' : ''} actif{actifs > 1 ? 's' : ''}
-            </span>
+            {total} contribution{total > 1 ? 's' : ''}{' '}
+            {depuis ? `depuis ${jourFr(depuis, { month: 'long', year: 'numeric' })}` : 'sur les 12 derniers mois'}
           </p>
         </div>
         {derniere && (
@@ -61,7 +57,12 @@ export default async function ActiviteGitHub() {
       {/* Scrolls sideways on small screens, starting from the most recent weeks; hover a day for its count */}
       <BulleCalendrier>
         <div className={styles.defile}>
-          <div className={styles.calendrier} style={{ '--colonnes': colonnes } as CSSProperties}>
+          <div
+            className={styles.calendrier}
+            // A short calendar gets larger squares, so it still fills its card
+            data-court={colonnes <= 30 ? '' : undefined}
+            style={{ '--colonnes': colonnes } as CSSProperties}
+          >
             <div className={styles.mois} aria-hidden="true">
               {mois.map(m => (
                 <span key={`${m.colonne}-${m.nom}`} style={{ gridColumnStart: m.colonne + 1 }}>

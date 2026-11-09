@@ -16,6 +16,10 @@
 }
 
 .lien {
+  /* 24px tall to tap; the negative margin keeps the layout where it was */
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
   color: rgba(var(--bleu-texte), var(--a-lien));
   text-underline-offset: 3px;
   transition: color 150ms ease-out;

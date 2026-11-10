@@ -1,5 +1,12 @@
 export type Contexte = "Projet personnel" | "Projet de cours" | "Projet d'équipe";
 
+/** Each context's folder on /projets, as written in the URL (?dossier=equipe) */
+export const CLE_DOSSIER: Record<Contexte, string> = {
+  "Projet personnel": "personnel",
+  "Projet de cours": "cours",
+  "Projet d'équipe": "equipe",
+};
+
 export type Projet = {
   slug: string;
   title: string;

@@ -2,7 +2,7 @@
 
 import { useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { useVerre } from '@/components/layout/verre'
-import { projets, type Contexte } from '@/data/projets'
+import { CLE_DOSSIER, projets, type Contexte } from '@/data/projets'
 import Cover from './Cover'
 import ProjetsCard from './ProjetsCard'
 import pageStyles from '@/app/projets/projets.module.css'
@@ -18,11 +18,13 @@ import styles from './Dossiers.module.css'
  */
 
 /* All three in the site's accent, i.e. the colour of the creature the visitor picked */
-const DOSSIERS: { contexte: Contexte; cle: string; titre: string; section: string }[] = [
-  { contexte: 'Projet personnel', cle: 'personnel', titre: 'Personnel', section: 'Projets personnels' },
-  { contexte: 'Projet de cours', cle: 'cours', titre: 'Cours', section: 'Projets de cours' },
-  { contexte: "Projet d'équipe", cle: 'equipe', titre: 'Équipe', section: "Projets d'équipe" },
-]
+const DOSSIERS: { contexte: Contexte; cle: string; titre: string; section: string }[] = (
+  [
+    { contexte: 'Projet personnel', titre: 'Personnel', section: 'Projets personnels' },
+    { contexte: 'Projet de cours', titre: 'Cours', section: 'Projets de cours' },
+    { contexte: "Projet d'équipe", titre: 'Équipe', section: "Projets d'équipe" },
+  ] as const
+).map(d => ({ ...d, cle: CLE_DOSSIER[d.contexte] }))
 
 /* In the URL when the visitor closed every folder */
 const AUCUN = 'aucun'

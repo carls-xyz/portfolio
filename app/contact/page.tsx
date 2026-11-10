@@ -11,7 +11,7 @@ export default function ContactPage() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1 className={styles.title}>Contactez-moi</h1>
+        <h1 className={styles.title}>Contact</h1>
         <p className={styles.description}>
           Une question sur un projet ou une proposition&nbsp;: le message arrive directement dans ma boîte mail.
         </p>

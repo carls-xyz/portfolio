@@ -113,7 +113,6 @@ export default function ContactForm() {
         </label>
         <input
           type="text"
-          placeholder="Entrez votre nom"
           autoComplete="name"
           maxLength={80}
           className={styles.input}
@@ -128,7 +127,7 @@ export default function ContactForm() {
         </label>
         <input
           type="email"
-          placeholder="votre@email.com"
+          placeholder="nom@domaine.fr"
           autoComplete="email"
           maxLength={254}
           className={styles.input}
@@ -142,7 +141,6 @@ export default function ContactForm() {
           Message
         </label>
         <textarea
-          placeholder="Votre message..."
           rows={6}
           maxLength={5000}
           className={styles.textarea}

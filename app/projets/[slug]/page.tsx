@@ -1,4 +1,4 @@
-import { projets } from '@/data/projets'
+import { CLE_DOSSIER, projets } from '@/data/projets'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ViewTransition } from 'react'
@@ -41,11 +41,15 @@ export default async function ProjetPage({ params }: Props) {
     notFound()
   }
 
+  // The next one in the list, back to the first after the last
+  const suivant = projets[(projets.indexOf(projet) + 1) % projets.length]
+
   return (
     // Same name as the project's card on /projets: the card grows into this panel
     <ViewTransition name={`carte-${projet.slug}`} share="carte">
       <div className={styles.container}>
-        <Link href="/projets" className={styles.back}>
+        {/* Back to the folder this project sits in, open */}
+        <Link href={`/projets?dossier=${CLE_DOSSIER[projet.contexte]}`} className={styles.back}>
           ← Retour aux projets
         </Link>
 
@@ -97,6 +101,20 @@ export default async function ProjetPage({ params }: Props) {
             Voir le code sur GitHub ↗
           </a>
         )}
+
+        {/* Straight on to the next project, without going back through the list */}
+        <nav className={styles.suivant} aria-label="Projet suivant">
+          <Link href={`/projets/${suivant.slug}`} className={styles.suivantLien}>
+            <span className={styles.suivantTexte}>
+              <span className={styles.suivantLabel}>Projet suivant</span>
+              <span className={styles.suivantTitre}>{suivant.title}</span>
+              <span className={styles.suivantAccroche}>{suivant.tagline}</span>
+            </span>
+            <span className={styles.suivantFleche} aria-hidden="true">
+              →
+            </span>
+          </Link>
+        </nav>
       </div>
     </ViewTransition>
   )

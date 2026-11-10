@@ -7,9 +7,9 @@
 .dossiers {
   --ressort: cubic-bezier(0.34, 1.4, 0.64, 1);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 260px));
-  justify-content: center;
-  gap: 32px;
+  /* As wide as the grid of cards below, with its gap: each folder sits above a column of cards */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
   max-width: 1200px;
   margin: 0 auto 64px;
   padding-top: 72px;
@@ -17,7 +17,8 @@
 
 .dossier {
   position: relative;
-  aspect-ratio: 4 / 3;
+  /* Flatter than a real folder: three of them span the page, and the cards below must stay in view */
+  aspect-ratio: 16 / 9;
   padding: 0;
   border: 0;
   border-radius: 14px;

@@ -95,15 +95,19 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: transparent;
-  border: 1px solid rgba(59, 130, 246, 0.5);
-  color: rgb(96, 165, 250);
-  transition: border-color 150ms ease-out, color 150ms ease-out, scale 120ms ease-out;
+  /* The page's one main action: filled with the site's accent, dark text on it in both themes */
+  background: rgb(var(--accent));
+  border: 1px solid transparent;
+  color: #111113;
+  transition: background-color 150ms ease-out, scale 120ms ease-out;
 }
 
-.button:hover {
-  border-color: rgba(59, 130, 246, 0.8);
-  color: rgb(147, 197, 253);
+.button:hover:not(:disabled) {
+  background: rgb(var(--accent-clair));
+}
+
+.button:disabled {
+  cursor: default;
 }
 
 .button:active:not(:disabled) {
@@ -114,8 +118,8 @@
 .spinner {
   width: 18px;
   height: 18px;
-  border: 3px solid rgba(var(--ink), 0.3);
-  border-top-color: rgb(var(--ink));
+  border: 3px solid rgba(17, 17, 19, 0.3);
+  border-top-color: #111113;
   border-radius: 50%;
 }
 
@@ -172,16 +176,6 @@
 }
 
 /* Light theme: the same blue, green and red, darkened enough to read on paper */
-:global([data-theme='light']) .button {
-  border-color: rgba(37, 99, 235, 0.5);
-  color: rgb(29, 78, 216);
-}
-
-:global([data-theme='light']) .button:hover {
-  border-color: rgba(37, 99, 235, 0.8);
-  color: rgb(30, 64, 175);
-}
-
 :global([data-theme='light']) .fieldError,
 :global([data-theme='light']) .message.error {
   color: rgb(185, 28, 28);

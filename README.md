@@ -60,6 +60,8 @@ Le site est disponible sur http://localhost:3000
 
 ## Variables d'environnement
 
+En production, configurer aussi `UPSTASH_REDIS_REST_URL` et `UPSTASH_REDIS_REST_TOKEN` avec une base Redis Upstash. Le quota de trois tentatives par IP sur dix minutes est atomique et partagé entre les instances. Sans cette configuration, ou si Redis est indisponible, le formulaire répond 503 sans envoyer d'email. En développement, un limiteur mémoire borné avec expiration suffit.
+
 | Variable | Rôle |
 |---|---|
 | `RESEND_API_KEY` | Clé API Resend, obligatoire pour envoyer les messages |

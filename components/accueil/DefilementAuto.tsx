@@ -27,11 +27,16 @@ export default function DefilementAuto({ className, children }: { className?: st
     let position = el.scrollLeft // kept as a float: scrollLeft rounds to whole pixels
     let repriseA = 0 // timestamp before which the drift stays paused
     let visible = true
+    let survole = false
+    let appuye = false
+    let retour: number | undefined
+    const interaction = () => survole || appuye || el.contains(document.activeElement)
 
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting))
     io.observe(el)
 
     const pauser = (ms = REPRISE_MS) => {
+      window.clearTimeout(retour)
       repriseA = performance.now() + ms
       el.dataset.auto = ''
     }
@@ -40,7 +45,7 @@ export default function DefilementAuto({ className, children }: { className?: st
       const dt = avant ? Math.min(0.1, (t - avant) / 1000) : 0
       avant = t
       const max = el.scrollWidth - el.clientWidth
-      if (max > 4 && visible && !document.hidden && t >= repriseA) {
+      if (max > 4 && visible && !document.hidden && !interaction() && t >= repriseA) {
         // Snapping would pull each small step back, so it is off while drifting
         el.dataset.auto = 'oui'
         if (Math.abs(el.scrollLeft - position) > 2) position = el.scrollLeft // the visitor moved it
@@ -48,11 +53,12 @@ export default function DefilementAuto({ className, children }: { className?: st
         el.scrollLeft = position
         if (position >= max) {
           // The end: a pause, a glide back to the start, another pause
-          window.setTimeout(() => {
+          pauser(PAUSE_FIN_MS + 1800)
+          retour = window.setTimeout(() => {
+            if (interaction() || !visible || document.hidden) return
             el.scrollTo({ left: 0, behavior: 'smooth' })
             position = 0
           }, PAUSE_FIN_MS)
-          pauser(PAUSE_FIN_MS + 1800)
         }
       }
       image = requestAnimationFrame(boucle)
@@ -62,17 +68,32 @@ export default function DefilementAuto({ className, children }: { className?: st
     // Any hand on it pauses the drift
     const main = () => pauser()
     const molette = () => pauser()
+    const entrer = (e: PointerEvent) => { survole = e.pointerType !== 'touch'; pauser() }
+    const sortir = () => { survole = false; pauser() }
+    const presser = () => { appuye = true; pauser() }
+    const relacher = () => { appuye = false; pauser() }
+    el.addEventListener('pointerenter', entrer)
+    el.addEventListener('pointerleave', sortir)
+    el.addEventListener('pointerdown', presser)
+    window.addEventListener('pointerup', relacher)
+    window.addEventListener('pointercancel', relacher)
+    el.addEventListener('focusout', main)
     el.addEventListener('pointerdown', main)
-    el.addEventListener('pointerenter', main)
     el.addEventListener('touchstart', main, { passive: true })
     el.addEventListener('focusin', main)
     el.addEventListener('wheel', molette, { passive: true })
 
     return () => {
       cancelAnimationFrame(image)
+      window.clearTimeout(retour)
+      el.removeEventListener('pointerenter', entrer)
+      el.removeEventListener('pointerleave', sortir)
+      el.removeEventListener('pointerdown', presser)
+      window.removeEventListener('pointerup', relacher)
+      window.removeEventListener('pointercancel', relacher)
+      el.removeEventListener('focusout', main)
       io.disconnect()
       el.removeEventListener('pointerdown', main)
-      el.removeEventListener('pointerenter', main)
       el.removeEventListener('touchstart', main)
       el.removeEventListener('focusin', main)
       el.removeEventListener('wheel', molette)

@@ -26,7 +26,10 @@ globalThis.fetch = async (_url, init) => {
   })
 }
 
+const cleImport = process.env.RESEND_API_KEY
+delete process.env.RESEND_API_KEY
 const { POST } = await import('../app/api/contact/route.ts')
+process.env.RESEND_API_KEY = cleImport
 
 const VALIDE = { name: 'Ada Lovelace', email: 'ada@example.com', message: 'Bonjour, voici un message de test.' }
 
@@ -42,6 +45,34 @@ function requete(corps: unknown, ip = `10.0.0.${++adresse}`) {
 
 beforeEach(() => {
   envois = []
+})
+
+test('shared limiter blocks excess sends and fails closed on an outage', async () => {
+  const fetchOriginal = globalThis.fetch
+  const urlOriginale = process.env.UPSTASH_REDIS_REST_URL
+  const tokenOriginal = process.env.UPSTASH_REDIS_REST_TOKEN
+  process.env.UPSTASH_REDIS_REST_URL = 'https://redis.example'
+  process.env.UPSTASH_REDIS_REST_TOKEN = 'test'
+  try {
+    globalThis.fetch = async (_url, init) => {
+      const commande = JSON.parse(String(init?.body))
+      assert.equal(commande[0], 'EVAL')
+      assert.equal(commande[4], '600000')
+      return Response.json({ result: [4, 12000] })
+    }
+    const res = await POST(requete(VALIDE))
+    assert.equal(res.status, 429)
+    assert.equal(res.headers.get('retry-after'), '12')
+    globalThis.fetch = async () => new Response('', { status: 503 })
+    assert.equal((await POST(requete(VALIDE))).status, 503)
+    assert.equal(envois.length, 0)
+  } finally {
+    globalThis.fetch = fetchOriginal
+    if (urlOriginale === undefined) delete process.env.UPSTASH_REDIS_REST_URL
+    else process.env.UPSTASH_REDIS_REST_URL = urlOriginale
+    if (tokenOriginal === undefined) delete process.env.UPSTASH_REDIS_REST_TOKEN
+    else process.env.UPSTASH_REDIS_REST_TOKEN = tokenOriginal
+  }
 })
 
 test('a valid message is sent once, to the configured address', async () => {
@@ -105,6 +136,23 @@ test('a robot that fills the hidden field gets a success, and no email leaves', 
   const res = await POST(requete({ ...VALIDE, website: 'https://spam.example' }))
   assert.equal(res.status, 200)
   assert.equal(envois.length, 0)
+})
+
+test('the body limit counts UTF-8 bytes rather than characters', async () => {
+  const res = await POST(requete({ ...VALIDE, message: '😀'.repeat(5100) }))
+  assert.equal(res.status, 413)
+  assert.equal(envois.length, 0)
+})
+
+test('without an API key the route answers 500 after importing successfully', async () => {
+  const cle = process.env.RESEND_API_KEY
+  delete process.env.RESEND_API_KEY
+  try {
+    assert.equal((await POST(requete(VALIDE))).status, 500)
+    assert.equal(envois.length, 0)
+  } finally {
+    process.env.RESEND_API_KEY = cle
+  }
 })
 
 test('the fourth message from one address within ten minutes is refused', async () => {

@@ -1,8 +1,6 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TAILLE_MAX_REQUETE = 20_000;
 const FENETRE_LIMITE = 10 * 60 * 1000;
@@ -10,8 +8,7 @@ const ENVOIS_MAX = 3;
 
 type Tentatives = { debut: number; nombre: number };
 
-// Limitation simple, par instance du serveur. Elle évite les rafales accidentelles
-// et complète le quota du fournisseur d'email sans nécessiter de base externe.
+// Repli borné pour le développement ; la production utilise Redis partagé.
 const tentatives = new Map<string, Tentatives>();
 
 function adresseClient(request: Request) {
@@ -22,8 +19,32 @@ function adresseClient(request: Request) {
   );
 }
 
-function verifierLimite(cle: string) {
+async function verifierLimite(cle: string) {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) {
+    // Increment and expiry must be atomic across server instances.
+    const script = "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('PEXPIRE',KEYS[1],ARGV[1]) end; return {n,redis.call('PTTL',KEYS[1])}";
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(['EVAL', script, '1', `contact:${cle}`, String(FENETRE_LIMITE)]),
+      cache: 'no-store',
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) throw new Error('Limiteur indisponible');
+    const { result } = await res.json();
+    if (!Array.isArray(result) || result.length !== 2 || !result.every(Number.isFinite) || result[1] < 0) {
+      throw new Error('Réponse du limiteur invalide');
+    }
+    return result[0] > ENVOIS_MAX ? Math.max(1, Math.ceil(result[1] / 1000)) : null;
+  }
+  if (process.env.NODE_ENV === 'production') throw new Error('Limiteur partagé non configuré');
   const maintenant = Date.now();
+  for (const [ip, valeur] of tentatives) {
+    if (maintenant - valeur.debut >= FENETRE_LIMITE) tentatives.delete(ip);
+  }
+  if (!tentatives.has(cle) && tentatives.size >= 10_000) throw new Error('Limiteur saturé');
   const entree = tentatives.get(cle);
 
   if (!entree || maintenant - entree.debut >= FENETRE_LIMITE) {
@@ -69,13 +90,32 @@ export async function POST(request: Request) {
       );
     }
 
-    const contenuBrut = await request.text();
-    if (contenuBrut.length > TAILLE_MAX_REQUETE) {
+    const lecteur = request.body?.getReader();
+    const morceaux: Uint8Array[] = [];
+    let taille = 0;
+    if (lecteur) {
+      try {
+        while (true) {
+          const { done, value } = await lecteur.read();
+          if (done) break;
+          taille += value.byteLength;
+          if (taille > TAILLE_MAX_REQUETE) {
+            await lecteur.cancel();
+            break;
+          }
+          morceaux.push(value);
+        }
+      } finally {
+        lecteur.releaseLock();
+      }
+    }
+    if (taille > TAILLE_MAX_REQUETE) {
       return NextResponse.json(
         { error: 'Le message est trop volumineux.' },
         { status: 413 }
       );
     }
+    const contenuBrut = Buffer.concat(morceaux).toString('utf8');
 
     let body: unknown;
     try {
@@ -125,7 +165,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const attente = verifierLimite(adresseClient(request));
+    let attente: number | null;
+    try {
+      attente = await verifierLimite(adresseClient(request));
+    } catch {
+      return NextResponse.json(
+        { error: 'Le formulaire est temporairement indisponible. Réessayez plus tard.' },
+        { status: 503, headers: { 'Retry-After': '60' } }
+      );
+    }
     if (attente !== null) {
       return NextResponse.json(
         { error: 'Trop de messages envoyés. Réessayez dans quelques minutes.' },
@@ -138,6 +186,7 @@ export async function POST(request: Request) {
     const contenu = echapper(messageNettoye);
     const sujet = nameNettoye.replace(/[\r\n]+/g, ' ');
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { error } = await resend.emails.send({
       from: process.env.CONTACT_FROM ?? 'Portfolio <onboarding@resend.dev>',
       to: [process.env.CONTACT_EMAIL],

@@ -1,6 +1,6 @@
 /*
  * GitHub activity for the home page, fetched on the server and cached for a
- * quarter of an hour. With GITHUB_TOKEN set, the official GraphQL API is used (it can count
+ * quarter of an hour, or refreshed at once by the GitHub webhook (app/api/revalidate). With GITHUB_TOKEN set, the official GraphQL API is used (it can count
  * private contributions too); without it, the public contributions page that
  * GitHub itself renders on the profile is read. Either way, only real data:
  * when both fail, the card is simply not shown.
@@ -19,6 +19,9 @@ export type Activite = {
 }
 
 const CACHE = 900 // seconds
+
+/** Cache tag of everything read from GitHub: the webhook (app/api/revalidate) refreshes it on each push */
+export const TAG_GITHUB = 'github'
 
 type Calendrier = Pick<Activite, 'total' | 'jours'>
 
@@ -44,7 +47,7 @@ async function parGraphQL(token: string): Promise<Calendrier | null> {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: requete, variables: { login: UTILISATEUR_GITHUB } }),
-    next: { revalidate: CACHE },
+    next: { revalidate: CACHE, tags: [TAG_GITHUB] },
   })
   if (!res.ok) return null
   const json = await res.json()
@@ -60,7 +63,7 @@ async function parGraphQL(token: string): Promise<Calendrier | null> {
 /** The calendar GitHub renders on the public profile: one cell per day, with its level and a tooltip giving the count */
 async function parPagePublique(): Promise<Calendrier | null> {
   const res = await fetch(`https://github.com/users/${UTILISATEUR_GITHUB}/contributions`, {
-    next: { revalidate: CACHE },
+    next: { revalidate: CACHE, tags: [TAG_GITHUB] },
   })
   if (!res.ok) return null
   const html = await res.text()
@@ -87,7 +90,7 @@ async function parPagePublique(): Promise<Calendrier | null> {
 async function derniereActivite(): Promise<Activite['derniere']> {
   const res = await fetch(`https://api.github.com/users/${UTILISATEUR_GITHUB}/repos?sort=pushed&per_page=5`, {
     headers: { Accept: 'application/vnd.github+json' },
-    next: { revalidate: CACHE },
+    next: { revalidate: CACHE, tags: [TAG_GITHUB] },
   })
   if (!res.ok) return null
   const depots: { name: string; fork: boolean; pushed_at: string }[] = await res.json()

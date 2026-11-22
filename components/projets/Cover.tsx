@@ -238,6 +238,64 @@ function Dessin({ slug }: { slug: string }) {
         </>
       )
 
+    // The orchestrator hands out to its five agents, then the check: nothing leaves unapproved
+    case 'clark': {
+      const agents = [
+        [300, 62],
+        [403, 137],
+        [364, 258],
+        [236, 258],
+        [197, 137],
+      ]
+      return (
+        <>
+          {agents.map(([x, y], i) => (
+            <line
+              key={`l${i}`}
+              className={styles.trace}
+              style={{ ['--i' as string]: i }}
+              x1={300}
+              y1={170}
+              x2={x}
+              y2={y}
+              pathLength={1}
+              stroke={BLUE}
+              strokeOpacity={0.4}
+              strokeWidth={2}
+            />
+          ))}
+          {agents.map(([x, y], i) => (
+            <rect
+              key={`a${i}`}
+              className={styles.apparait}
+              style={{ ['--i' as string]: i }}
+              x={x - 16}
+              y={y - 16}
+              width={32}
+              height={32}
+              rx={8}
+              fill={BLUE}
+              fillOpacity={0.35}
+              stroke={BLUE}
+              strokeOpacity={0.6}
+            />
+          ))}
+          <rect x={268} y={138} width={64} height={64} rx={14} fill="#0f0f10" stroke={BLUE} strokeOpacity={0.8} strokeWidth={3} />
+          <path
+            className={styles.trace}
+            style={{ ['--i' as string]: 6 }}
+            d="M286 171 l10 10 20 -22"
+            pathLength={1}
+            fill="none"
+            stroke={BLUE}
+            strokeWidth={6}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </>
+      )
+    }
+
     // Camera interference: the lines jump once, like a cut in the feed
     case 'emotions-project':
       return (

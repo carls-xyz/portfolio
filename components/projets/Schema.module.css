@@ -1,0 +1,153 @@
+/*
+ * The case study's diagrams. Everything is drawn from the site's tokens, so
+ * both themes and every creature's accent apply without a second drawing.
+ * The figure is a container: below 560px of its own width the narrow,
+ * top-to-bottom layout replaces the wide one.
+ */
+.figure {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 8px 0 0;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(var(--ink), 0.02);
+}
+
+.large,
+.etroit {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.etroit {
+  display: none;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+@container (max-width: 560px) {
+  .large {
+    display: none;
+  }
+
+  .etroit {
+    display: block;
+  }
+}
+
+/* ---------- Boxes ---------- */
+
+.boite {
+  fill: var(--surface-raised);
+  stroke: rgba(var(--ink), 0.2);
+  stroke-width: 1;
+}
+
+/* The one step that matters in each diagram: in the accent */
+.accent .boite {
+  fill: rgba(var(--accent), 0.14);
+  stroke: rgba(var(--accent), 0.75);
+  stroke-width: 1.5;
+}
+
+/* What leads nowhere: dashed and dimmed */
+.eteint .boite {
+  fill: none;
+  stroke: rgba(var(--ink), 0.28);
+  stroke-dasharray: 4 4;
+}
+
+.texte {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: rgb(var(--ink));
+}
+
+.sous {
+  font-size: 11.5px;
+  text-anchor: middle;
+  fill: rgba(var(--ink), var(--a-moyen));
+}
+
+.accent .texte {
+  fill: rgb(var(--bleu-texte));
+}
+
+.eteint .texte,
+.eteint .sous {
+  fill: rgba(var(--ink), var(--a-faible));
+}
+
+/* ---------- Arrows, frames, labels ---------- */
+
+.fleche line,
+.flecheEteinte line {
+  stroke: rgba(var(--ink), 0.38);
+  stroke-width: 1.5;
+}
+
+.fleche polygon {
+  fill: rgba(var(--ink), 0.38);
+}
+
+.flecheEteinte line {
+  stroke: rgba(var(--ink), 0.22);
+  stroke-dasharray: 4 4;
+}
+
+.flecheEteinte polygon {
+  fill: rgba(var(--ink), 0.22);
+}
+
+.cadre {
+  fill: none;
+  stroke: var(--line);
+}
+
+.etiquette {
+  font-family: var(--font-section);
+  font-size: 11px;
+  fill: rgba(var(--bleu-texte), var(--a-lien));
+}
+
+/* ---------- Caption ---------- */
+
+.legende {
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(var(--gris-bleu), 0.75);
+}
+
+.legendeTitre {
+  color: rgba(var(--ink), 0.9);
+  font-weight: 500;
+}
+
+/* Forced colours: system ink, the accent box keeps a thicker outline */
+@media (forced-colors: active) {
+  .boite,
+  .cadre,
+  .fleche line,
+  .flecheEteinte line {
+    stroke: CanvasText;
+  }
+
+  .boite {
+    fill: Canvas;
+  }
+
+  .texte,
+  .sous,
+  .etiquette,
+  .fleche polygon,
+  .flecheEteinte polygon {
+    fill: CanvasText;
+  }
+}

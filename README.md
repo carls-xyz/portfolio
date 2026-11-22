@@ -78,6 +78,8 @@ Le champ `role` sert aux projets réalisés à plusieurs : il décrit ce que j'y
 
 `aLaUne: true` fait remonter le projet sur la page d'accueil.
 
+Le champ optionnel `etudeDeCas` transforme la page de détail en étude de cas : le problème de départ, les parties de l'architecture (chacune peut être suivie d'un schéma dessiné par `components/projets/Schema.tsx`) et les choix techniques argumentés. Sans lui, la page reste inchangée.
+
 Les illustrations sont des visuels SVG abstraits stockés dans `public/projets/`, un par projet, déclinés dans la palette du site. C'est un choix assumé plutôt que des captures d'écran : le rendu reste neutre et homogène d'un projet à l'autre. Pour en ajouter un, reprendre le format des fichiers existants (600×340, dégradé sombre, teinte propre au projet).
 
 ## Déploiement

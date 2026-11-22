@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { useVerre } from '@/components/layout/verre'
 import { CLE_DOSSIER, projets, type Contexte } from '@/data/projets'
 import Cover from './Cover'
@@ -58,10 +58,13 @@ function choisir(cle: string | null) {
 export default function Dossiers() {
   const cle = useSyncExternalStore(abonner, lireDossier, surServeur)
   const ouvert = DOSSIERS.find(d => d.cle === cle)
+  // Transitions désactivées jusqu'après l'hydratation : la synchro URL initiale ne s'anime pas.
+  const [pret, setPret] = useState(false)
+  useEffect(() => { setPret(true) }, [])
 
   return (
     <>
-      <div className={styles.dossiers} role="group" aria-label="Dossiers de projets">
+      <div className={styles.dossiers} data-pret={pret || undefined} role="group" aria-label="Dossiers de projets">
         {DOSSIERS.map(d => {
           const liste = projets.filter(p => p.contexte === d.contexte)
           const ici = ouvert === d

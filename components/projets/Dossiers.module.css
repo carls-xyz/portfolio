@@ -69,6 +69,10 @@
   left: 50%;
   width: 64%;
   transform: translateX(-50%) translateX(calc(var(--i) * 12%)) rotate(calc(var(--i) * 3deg));
+  /* Les transitions s'activent après l'hydratation : la synchro URL initiale ne s'anime pas. */
+}
+
+[data-pret] .feuille {
   transition: transform 450ms var(--ressort);
 }
 
@@ -101,6 +105,13 @@
   box-shadow: var(--verre-bord);
   color: var(--verre-encre);
   transform-origin: bottom;
+  /* Safari : force la promotion GPU pour éviter le recalcul du backdrop-filter à chaque frame. */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+[data-pret] .face {
   transition: transform 450ms var(--ressort);
 }
 
@@ -170,8 +181,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .feuille,
-  .face {
+  [data-pret] .feuille,
+  [data-pret] .face {
     transition: none;
   }
 }

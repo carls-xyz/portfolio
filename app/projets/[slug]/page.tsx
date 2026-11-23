@@ -5,6 +5,7 @@ import { ViewTransition } from 'react'
 import CoverEnBoucle from '@/components/projets/CoverEnBoucle'
 import Macbook from '@/components/projets/Macbook'
 import DiffCode from '@/components/projets/DiffCode'
+import Schema from '@/components/projets/Schema'
 import { diffs } from '@/data/diffs'
 import styles from './projets.module.css'
 
@@ -43,6 +44,8 @@ export default async function ProjetPage({ params }: Props) {
 
   // The next one in the list, back to the first after the last
   const suivant = projets[(projets.indexOf(projet) + 1) % projets.length]
+  // Only some projects carry a case study; the others keep the page as it was
+  const etude = projet.etudeDeCas
 
   return (
     // Same name as the project's card on /projets: the card grows into this panel
@@ -72,6 +75,13 @@ export default async function ProjetPage({ params }: Props) {
 
         <p className={styles.description}>{projet.description}</p>
 
+        {etude && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Le problème</h2>
+            <p className={styles.prose}>{etude.probleme}</p>
+          </section>
+        )}
+
         <section className={`${styles.section} ${styles.encadre}`}>
           <h2 className={styles.sectionTitle}>Ce que contient le projet</h2>
           <ul className={styles.points}>
@@ -82,6 +92,37 @@ export default async function ProjetPage({ params }: Props) {
             ))}
           </ul>
         </section>
+
+        {/* How it is built, part by part, each diagram right after the text it draws */}
+        {etude && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Comment c&apos;est construit</h2>
+            {etude.sections.map(partie => (
+              <div key={partie.titre} className={styles.partie}>
+                <h3 className={styles.partieTitre}>{partie.titre}</h3>
+                <p className={styles.prose}>{partie.texte}</p>
+                {partie.schema && <Schema {...partie.schema} />}
+              </div>
+            ))}
+          </section>
+        )}
+
+        {etude && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Choix techniques</h2>
+            <ol className={styles.choix}>
+              {etude.choix.map((c, i) => (
+                <li key={c.titre} className={styles.choixItem}>
+                  <span className={styles.choixNumero} aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className={styles.partieTitre}>{c.titre}</h3>
+                  <p className={styles.prose}>{c.pourquoi}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
         {diffs[projet.slug] && <DiffCode diff={diffs[projet.slug]} titreSection={styles.sectionTitle} />}
 

@@ -23,9 +23,99 @@ export type Projet = {
   repoUrl?: string;
   imageUrl: string;
   aLaUne?: boolean;
+  /** Étude de cas, pour les projets qui méritent plus qu'une liste de points. */
+  etudeDeCas?: EtudeDeCas;
+};
+
+/** The three diagrams drawn by components/projets/Schema.tsx */
+export type SchemaId = "vue-ensemble" | "cycle-souvenir" | "action-externe";
+
+export type EtudeDeCas = {
+  /** Le point de départ : ce qui manquait, en un paragraphe. */
+  probleme: string;
+  /** Comment c'est construit, partie par partie ; un schéma peut suivre le texte. */
+  sections: { titre: string; texte: string; schema?: { id: SchemaId; titre: string; legende: string } }[];
+  /** Les choix techniques, chacun avec ce qu'il a coûté et ce qu'il apporte. */
+  choix: { titre: string; pourquoi: string }[];
 };
 
 export const projets: Projet[] = [
+  {
+    slug: "clark",
+    title: "Clark",
+    tagline: "Un agent personnel qui anticipe, mais ne décide jamais seul",
+    description:
+      "Clark est mon agent personnel : un assistant IA qui tourne sur mon Mac, suit mes mails, mon agenda, mes projets de code et mes notes, et me propose ce qu'il y a à faire. Je l'ai construit pour lui déléguer les petites tâches du quotidien sans jamais lui laisser le dernier mot.",
+    annee: "2026",
+    contexte: "Projet personnel",
+    stack: ["TypeScript", "Node.js", "Claude Agent SDK", "MCP", "SQLite", "Obsidian"],
+    points: [
+      "Un orchestrateur qui reçoit toutes les demandes et les confie à cinq agents spécialisés",
+      "Une mémoire longue validée : chaque souvenir est proposé avec sa source, puis confirmé ou corrigé",
+      "Journal, veille et mémoire écrits en notes liées dans un coffre Obsidian",
+      "Tout envoi ou commande hors du bac à sable attend une validation, depuis le web, Telegram ou iMessage",
+    ],
+    imageUrl: "/projets/clark.svg",
+    aLaUne: true,
+    etudeDeCas: {
+      probleme:
+        "Mes journées se dispersent en petites tâches : trier les mails, suivre les offres d'alternance, relire une PR, retrouver une note prise la semaine d'avant. Aucune n'est difficile, mais ensemble elles occupent la tête. Je voulais un assistant qui voie venir ce qui arrive, une relance à faire ou une échéance qui approche, et qui me le propose. Sans le laisser agir seul : un mail parti par erreur ou un souvenir faux coûte plus cher que le temps gagné.",
+      sections: [
+        {
+          titre: "Un orchestrateur et cinq agents",
+          texte:
+            "Toutes les demandes arrivent au même endroit, quelle que soit l'interface : le web sur mon Mac, Telegram ou iMessage. L'orchestrateur répond lui-même aux questions simples et confie le reste à l'agent qui convient. Mousse rassemble des faits sourcés, Braise rédige, Guimauve relit et repère les contradictions, Lilas juge la clarté et le ton. Boulon s'occupe du code : il travaille dans une copie du dépôt, sur sa propre branche, et je relis sa PR avant toute fusion.",
+          schema: {
+            id: "vue-ensemble",
+            titre: "Vue d'ensemble",
+            legende: "Trois interfaces, un orchestrateur, cinq agents spécialisés et les outils qu'ils utilisent.",
+          },
+        },
+        {
+          titre: "Une mémoire que je valide",
+          texte:
+            "Clark ne retient rien seul. Quand il apprend quelque chose de durable, il propose un souvenir avec sa source : la conversation, le fichier ou la page d'où il le tient. Je le confirme, je le corrige ou je l'ignore. Tant qu'un souvenir n'est pas confirmé, il n'est jamais utilisé, et quand Clark s'appuie sur l'un d'eux, il sait dire d'où il vient.",
+          schema: {
+            id: "cycle-souvenir",
+            titre: "Le cycle d'un souvenir",
+            legende: "Confirmé ou corrigé, un souvenir sert ; ignoré, il n'est jamais utilisé.",
+          },
+        },
+        {
+          titre: "Un coffre Obsidian comme carnet",
+          texte:
+            "Le journal du jour, la veille et la mémoire confirmée sont écrits en notes Markdown dans mon coffre Obsidian, reliées entre elles. Je relis, je cherche et je corrige avec un outil que j'utilise déjà, sans base de données à ouvrir. Clark n'écrit que dans son propre dossier du coffre.",
+        },
+        {
+          titre: "Rien ne part sans un bouton",
+          texte:
+            "Un mail, un message, une commande à lancer sur le Mac hors du bac à sable : Clark prépare tout, puis s'arrête. Je vois le texte ou la commande exacte et je choisis Envoyer ou Refuser. Ce qu'il lit dans un mail ou une page reste de la donnée : s'il y trouve une consigne, il me la signale au lieu de la suivre.",
+          schema: {
+            id: "action-externe",
+            titre: "Le chemin d'une action externe",
+            legende: "Clark prépare, je valide : sans mon accord, rien ne part.",
+          },
+        },
+      ],
+      choix: [
+        {
+          titre: "Une mémoire validée plutôt qu'automatique",
+          pourquoi:
+            "Une mémoire qui s'écrit seule finit par retenir des erreurs, puis par les répéter avec assurance. Valider coûte quelques secondes par souvenir ; en échange, tout ce que Clark sait de moi est vérifié, daté et sourcé. Un souvenir qui périme porte une date d'expiration, et une correction ne remplace l'ancienne version qu'une fois confirmée.",
+        },
+        {
+          titre: "Des agents spécialisés plutôt qu'un seul gros prompt",
+          pourquoi:
+            "Un prompt qui doit tout savoir faire devient long, fragile et difficile à corriger. Chaque agent a une consigne courte et un seul métier : je peux améliorer la relecture sans toucher à la recherche. L'orchestrateur leur confie une mission complète, puis fait la synthèse, et chaque étape reste lisible.",
+        },
+        {
+          titre: "Un bac à sable et une validation par action plutôt que l'autonomie totale",
+          pourquoi:
+            "Les commandes de Clark tournent dans un bac à sable, limité à son dossier de travail. Ce qui en sort passe par une validation, action par action. C'est moins spectaculaire qu'un agent qui fait tout seul, mais je peux lui ouvrir mes comptes sans craindre une erreur irréversible. Et comme les validations se font aussi depuis l'interface, je garde la main même loin de mon Mac.",
+        },
+      ],
+    },
+  },
   {
     slug: "rag-doc-assistant",
     title: "RAG Doc Assistant",
